@@ -13,7 +13,6 @@ body{
   color:white;
 }
 
-/* Video Player */
 .player{
   width:100%;
   position:sticky;
@@ -28,9 +27,8 @@ video{
   background:black;
 }
 
-/* Section */
 .section{
-  padding:15px 0;
+  padding:20px 0;
 }
 
 .section-title{
@@ -41,12 +39,11 @@ video{
   font-size:18px;
 }
 
-/* Horizontal Slide System (Toffee Style) */
 .channels{
   display:flex;
   overflow-x:auto;
   scroll-behavior:smooth;
-  padding:0 15px;      /* দুই পাশে ফাঁকা */
+  padding:0 15px;
   gap:15px;
 }
 
@@ -55,27 +52,29 @@ video{
 }
 
 .channel{
-  flex:0 0 22%;        /* এক লাইনে ৪টা */
-  aspect-ratio:1/1;
-  border-radius:50%;
-  overflow:hidden;
-  background:white;
+  flex:0 0 22%;
+  text-align:center;
   cursor:pointer;
 }
 
 .channel img{
   width:100%;
-  height:100%;
+  aspect-ratio:1/1;
+  border-radius:50%;
   object-fit:cover;
+  background:white;
+}
+
+.channel-name{
+  margin-top:8px;
+  font-size:13px;
 }
 </style>
 </head>
 <body>
 
 <div class="player">
-  <video id="videoPlayer" controls autoplay>
-    <source id="videoSource" src="" type="application/x-mpegURL">
-  </video>
+  <video id="videoPlayer" controls></video>
 </div>
 
 <!-- Bangladeshi Channels -->
@@ -86,16 +85,25 @@ video{
   </div>
   <div class="channels">
 
-    <div class="channel" onclick="playChannel(https://owrcovcrpy.gpcdn.net/bpk-tv/1713/output/1713-audio_113432_eng=113200-video=2202800.m3u8)"><img src="https://via.placeholder.com/150?text=1"></div>
-    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=2"></div>
-    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=3"></div>
-    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=4"></div>
-    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=5"></div>
-    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=6"></div>
-    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=7"></div>
-    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=8"></div>
-    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=9"></div>
-    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=10"></div>
+    <div class="channel" onclick="playChannel('YOUR_LINK_1')">
+      <img src="logo1.png">
+      <div class="channel-name">Somoy TV</div>
+    </div>
+
+    <div class="channel" onclick="playChannel('YOUR_LINK_2')">
+      <img src="logo2.png">
+      <div class="channel-name">Jamuna TV</div>
+    </div>
+
+    <div class="channel" onclick="playChannel('YOUR_LINK_3')">
+      <img src="logo3.png">
+      <div class="channel-name">Channel 24</div>
+    </div>
+
+    <div class="channel" onclick="playChannel('YOUR_LINK_4')">
+      <img src="logo4.png">
+      <div class="channel-name">Ekattor TV</div>
+    </div>
 
   </div>
 </div>
@@ -108,16 +116,25 @@ video{
   </div>
   <div class="channels">
 
-    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=S1"></div>
-    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=S2"></div>
-    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=S3"></div>
-    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=S4"></div>
-    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=S5"></div>
-    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=S6"></div>
-    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=S7"></div>
-    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=S8"></div>
-    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=S9"></div>
-    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=S10"></div>
+    <div class="channel" onclick="playChannel('YOUR_LINK_5')">
+      <img src="logo5.png">
+      <div class="channel-name">T Sports</div>
+    </div>
+
+    <div class="channel" onclick="playChannel('YOUR_LINK_6')">
+      <img src="logo6.png">
+      <div class="channel-name">Sony Sports</div>
+    </div>
+
+    <div class="channel" onclick="playChannel('YOUR_LINK_7')">
+      <img src="logo7.png">
+      <div class="channel-name">Star Sports</div>
+    </div>
+
+    <div class="channel" onclick="playChannel('YOUR_LINK_8')">
+      <img src="logo8.png">
+      <div class="channel-name">ESPN</div>
+    </div>
 
   </div>
 </div>
@@ -130,29 +147,49 @@ video{
   </div>
   <div class="channels">
 
-    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=N1"></div>
-    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=N2"></div>
-    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=N3"></div>
-    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=N4"></div>
-    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=N5"></div>
-    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=N6"></div>
-    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=N7"></div>
-    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=N8"></div>
-    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=N9"></div>
-    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=N10"></div>
+    <div class="channel" onclick="playChannel('YOUR_LINK_9')">
+      <img src="logo9.png">
+      <div class="channel-name">ATN News</div>
+    </div>
+
+    <div class="channel" onclick="playChannel('YOUR_LINK_10')">
+      <img src="logo10.png">
+      <div class="channel-name">BBC News</div>
+    </div>
+
+    <div class="channel" onclick="playChannel('YOUR_LINK_11')">
+      <img src="logo11.png">
+      <div class="channel-name">CNN</div>
+    </div>
+
+    <div class="channel" onclick="playChannel('YOUR_LINK_12')">
+      <img src="logo12.png">
+      <div class="channel-name">Al Jazeera</div>
+    </div>
 
   </div>
 </div>
 
-<script>
-var testLink = "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8";
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
+<script>
 function playChannel(url){
   var video = document.getElementById("videoPlayer");
-  var source = document.getElementById("videoSource");
-  source.src = url;
-  video.load();
-  video.play();
+
+  if (Hls.isSupported()) {
+      var hls = new Hls();
+      hls.loadSource(url);
+      hls.attachMedia(video);
+      hls.on(Hls.Events.MANIFEST_PARSED,function() {
+          video.play();
+      });
+  }
+  else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      video.src = url;
+      video.addEventListener('loadedmetadata',function() {
+          video.play();
+      });
+  }
 }
 </script>
 
