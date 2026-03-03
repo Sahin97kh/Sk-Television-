@@ -30,23 +30,24 @@ video{
 
 /* Section */
 .section{
-  padding:15px 10px;
+  padding:15px 0;
 }
 
 .section-title{
   display:flex;
   justify-content:space-between;
+  padding:0 15px;
   margin-bottom:15px;
   font-size:18px;
 }
 
-/* Horizontal Slide System */
+/* Horizontal Slide System (Toffee Style) */
 .channels{
   display:flex;
   overflow-x:auto;
-  gap:15px;
   scroll-behavior:smooth;
-  padding-bottom:10px;
+  padding:0 15px;      /* দুই পাশে ফাঁকা */
+  gap:15px;
 }
 
 .channels::-webkit-scrollbar{
@@ -54,7 +55,7 @@ video{
 }
 
 .channel{
-  flex:0 0 22%;
+  flex:0 0 22%;        /* এক লাইনে ৪টা */
   aspect-ratio:1/1;
   border-radius:50%;
   overflow:hidden;
