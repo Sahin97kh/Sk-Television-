@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My TV</title>
+<title>SK Television</title>
 
 <style>
 body{
@@ -13,6 +13,7 @@ body{
   color:white;
 }
 
+/* Video Player Top */
 .player{
   width:100%;
   background:black;
@@ -27,30 +28,28 @@ video{
   background:black;
 }
 
+/* Section */
 .section{
-  padding:15px 10px;
+  padding:15px;
 }
 
 .section-title{
   display:flex;
   justify-content:space-between;
-  margin-bottom:10px;
+  margin-bottom:15px;
+  font-size:18px;
 }
 
+/* 4 channel per row */
 .channels{
-  display:flex;
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
   gap:15px;
-  overflow-x:auto;
-  scroll-behavior:smooth;
-}
-
-.channels::-webkit-scrollbar{
-  display:none;
 }
 
 .channel{
-  min-width:80px;
-  height:80px;
+  width:100%;
+  aspect-ratio:1/1;
   border-radius:50%;
   overflow:hidden;
   background:white;
@@ -66,6 +65,7 @@ video{
 </head>
 <body>
 
+<!-- Video Player -->
 <div class="player">
   <video id="videoPlayer" controls autoplay>
     <source id="videoSource" src="" type="application/x-mpegURL">
@@ -79,17 +79,16 @@ video{
     <span>View All</span>
   </div>
   <div class="channels">
-    <!-- 10 Channels -->
-    <div class="channel" onclick="playChannel('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')"><img src="https://via.placeholder.com/150/ff0000/ffffff?text=1"></div>
-    <div class="channel" onclick="playChannel('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')"><img src="https://via.placeholder.com/150/00ff00/ffffff?text=2"></div>
-    <div class="channel" onclick="playChannel('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')"><img src="https://via.placeholder.com/150/0000ff/ffffff?text=3"></div>
-    <div class="channel" onclick="playChannel('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')"><img src="https://via.placeholder.com/150/ff00ff/ffffff?text=4"></div>
-    <div class="channel" onclick="playChannel('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')"><img src="https://via.placeholder.com/150/ffff00/000000?text=5"></div>
-    <div class="channel" onclick="playChannel('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')"><img src="https://via.placeholder.com/150/00ffff/000000?text=6"></div>
-    <div class="channel" onclick="playChannel('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')"><img src="https://via.placeholder.com/150/9900ff/ffffff?text=7"></div>
-    <div class="channel" onclick="playChannel('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')"><img src="https://via.placeholder.com/150/ff6600/ffffff?text=8"></div>
-    <div class="channel" onclick="playChannel('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')"><img src="https://via.placeholder.com/150/008000/ffffff?text=9"></div>
-    <div class="channel" onclick="playChannel('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')"><img src="https://via.placeholder.com/150/000000/ffffff?text=10"></div>
+    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=1"></div>
+    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=2"></div>
+    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=3"></div>
+    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=4"></div>
+    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=5"></div>
+    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=6"></div>
+    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=7"></div>
+    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=8"></div>
+    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=9"></div>
+    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=10"></div>
   </div>
 </div>
 
@@ -100,17 +99,16 @@ video{
     <span>View All</span>
   </div>
   <div class="channels">
-    <!-- 10 Channels -->
-    <div class="channel" onclick="playChannel('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')"><img src="https://via.placeholder.com/150/ff0000/ffffff?text=S1"></div>
-    <div class="channel" onclick="playChannel('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')"><img src="https://via.placeholder.com/150/00ff00/ffffff?text=S2"></div>
-    <div class="channel" onclick="playChannel('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')"><img src="https://via.placeholder.com/150/0000ff/ffffff?text=S3"></div>
-    <div class="channel" onclick="playChannel('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')"><img src="https://via.placeholder.com/150/ff00ff/ffffff?text=S4"></div>
-    <div class="channel" onclick="playChannel('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')"><img src="https://via.placeholder.com/150/ffff00/000000?text=S5"></div>
-    <div class="channel" onclick="playChannel('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')"><img src="https://via.placeholder.com/150/00ffff/000000?text=S6"></div>
-    <div class="channel" onclick="playChannel('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')"><img src="https://via.placeholder.com/150/9900ff/ffffff?text=S7"></div>
-    <div class="channel" onclick="playChannel('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')"><img src="https://via.placeholder.com/150/ff6600/ffffff?text=S8"></div>
-    <div class="channel" onclick="playChannel('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')"><img src="https://via.placeholder.com/150/008000/ffffff?text=S9"></div>
-    <div class="channel" onclick="playChannel('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')"><img src="https://via.placeholder.com/150/000000/ffffff?text=S10"></div>
+    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=S1"></div>
+    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=S2"></div>
+    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=S3"></div>
+    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=S4"></div>
+    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=S5"></div>
+    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=S6"></div>
+    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=S7"></div>
+    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=S8"></div>
+    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=S9"></div>
+    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=S10"></div>
   </div>
 </div>
 
@@ -121,21 +119,22 @@ video{
     <span>View All</span>
   </div>
   <div class="channels">
-    <!-- 10 Channels -->
-    <div class="channel" onclick="playChannel('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')"><img src="https://via.placeholder.com/150/ff0000/ffffff?text=N1"></div>
-    <div class="channel" onclick="playChannel('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')"><img src="https://via.placeholder.com/150/00ff00/ffffff?text=N2"></div>
-    <div class="channel" onclick="playChannel('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')"><img src="https://via.placeholder.com/150/0000ff/ffffff?text=N3"></div>
-    <div class="channel" onclick="playChannel('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')"><img src="https://via.placeholder.com/150/ff00ff/ffffff?text=N4"></div>
-    <div class="channel" onclick="playChannel('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')"><img src="https://via.placeholder.com/150/ffff00/000000?text=N5"></div>
-    <div class="channel" onclick="playChannel('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')"><img src="https://via.placeholder.com/150/00ffff/000000?text=N6"></div>
-    <div class="channel" onclick="playChannel('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')"><img src="https://via.placeholder.com/150/9900ff/ffffff?text=N7"></div>
-    <div class="channel" onclick="playChannel('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')"><img src="https://via.placeholder.com/150/ff6600/ffffff?text=N8"></div>
-    <div class="channel" onclick="playChannel('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')"><img src="https://via.placeholder.com/150/008000/ffffff?text=N9"></div>
-    <div class="channel" onclick="playChannel('https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8')"><img src="https://via.placeholder.com/150/000000/ffffff?text=N10"></div>
+    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=N1"></div>
+    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=N2"></div>
+    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=N3"></div>
+    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=N4"></div>
+    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=N5"></div>
+    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=N6"></div>
+    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=N7"></div>
+    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=N8"></div>
+    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=N9"></div>
+    <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=N10"></div>
   </div>
 </div>
 
 <script>
+var testLink = "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8";
+
 function playChannel(url){
   var video = document.getElementById("videoPlayer");
   var source = document.getElementById("videoSource");
