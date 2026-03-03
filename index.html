@@ -106,24 +106,42 @@ video{
 /* ====== শুধু এখানে এডিট করবে ====== */
 
 const banglaChannels = [
-  { name:"Somoy TV", logo:"logos/somoy.png", link:"LINK1" },
-  { name:"Jamuna TV", logo:"logos/jamuna.png", link:"LINK2" },
-  { name:"Channel 24", logo:"logos/channel24.png", link:"LINK3" },
-  { name:"Ekattor", logo:"logos/ekattor.png", link:"LINK4" }
+  { name:"Channel 1", logo:"logos/ch1.png", link:"LINK1" },
+  { name:"Channel 2", logo:"logos/ch2.png", link:"LINK2" },
+  { name:"Channel 3", logo:"logos/ch3.png", link:"LINK3" },
+  { name:"Channel 4", logo:"logos/ch4.png", link:"LINK4" },
+  { name:"Channel 5", logo:"logos/ch5.png", link:"LINK5" },
+  { name:"Channel 6", logo:"logos/ch6.png", link:"LINK6" },
+  { name:"Channel 7", logo:"logos/ch7.png", link:"LINK7" },
+  { name:"Channel 8", logo:"logos/ch8.png", link:"LINK8" },
+  { name:"Channel 9", logo:"logos/ch9.png", link:"LINK9" },
+  { name:"Channel 10", logo:"logos/ch10.png", link:"LINK10" }
 ];
 
 const sportsChannels = [
-  { name:"T Sports", logo:"logos/tsports.png", link:"LINK5" },
-  { name:"Star Sports", logo:"logos/star.png", link:"LINK6" },
-  { name:"Sony Sports", logo:"logos/sony.png", link:"LINK7" },
-  { name:"ESPN", logo:"logos/espn.png", link:"LINK8" }
+  { name:"Sports 1", logo:"logos/s1.png", link:"LINK11" },
+  { name:"Sports 2", logo:"logos/s2.png", link:"LINK12" },
+  { name:"Sports 3", logo:"logos/s3.png", link:"LINK13" },
+  { name:"Sports 4", logo:"logos/s4.png", link:"LINK14" },
+  { name:"Sports 5", logo:"logos/s5.png", link:"LINK15" },
+  { name:"Sports 6", logo:"logos/s6.png", link:"LINK16" },
+  { name:"Sports 7", logo:"logos/s7.png", link:"LINK17" },
+  { name:"Sports 8", logo:"logos/s8.png", link:"LINK18" },
+  { name:"Sports 9", logo:"logos/s9.png", link:"LINK19" },
+  { name:"Sports 10", logo:"logos/s10.png", link:"LINK20" }
 ];
 
 const newsChannels = [
-  { name:"ATN News", logo:"logos/atn.png", link:"LINK9" },
-  { name:"BBC News", logo:"logos/bbc.png", link:"LINK10" },
-  { name:"CNN", logo:"logos/cnn.png", link:"LINK11" },
-  { name:"Al Jazeera", logo:"logos/aljazeera.png", link:"LINK12" }
+  { name:"News 1", logo:"logos/n1.png", link:"LINK21" },
+  { name:"News 2", logo:"logos/n2.png", link:"LINK22" },
+  { name:"News 3", logo:"logos/n3.png", link:"LINK23" },
+  { name:"News 4", logo:"logos/n4.png", link:"LINK24" },
+  { name:"News 5", logo:"logos/n5.png", link:"LINK25" },
+  { name:"News 6", logo:"logos/n6.png", link:"LINK26" },
+  { name:"News 7", logo:"logos/n7.png", link:"LINK27" },
+  { name:"News 8", logo:"logos/n8.png", link:"LINK28" },
+  { name:"News 9", logo:"logos/n9.png", link:"LINK29" },
+  { name:"News 10", logo:"logos/n10.png", link:"LINK30" }
 ];
 
 /* ====== নিচে কিছুই বদলাবে না ====== */
@@ -134,17 +152,14 @@ let hls;
 
 function createChannels(list, containerId){
   const container = document.getElementById(containerId);
-
   list.forEach((channel,index) => {
     const div = document.createElement("div");
     div.className = "channel";
     div.onclick = function(){ startPlayback(list,index) };
-
     div.innerHTML = `
       <img src="${channel.logo}">
       <div class="channel-name">${channel.name}</div>
     `;
-
     container.appendChild(div);
   });
 }
