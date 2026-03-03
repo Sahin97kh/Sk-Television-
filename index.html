@@ -5,295 +5,224 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SK Television</title>
 
-<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-
 <style>
 body{
-    margin:0;
-    background:#14001f;
-    font-family:Arial, sans-serif;
-    color:white;
+  margin:0;
+  font-family: Arial, sans-serif;
+  background:#0b0014;
+  color:white;
+}
+
+.player{
+  position:sticky;
+  top:0;
+  background:black;
+  z-index:1000;
 }
 
 video{
-    width:100%;
-    height:220px;
-    background:black;
+  width:100%;
+  height:220px;
+  background:black;
 }
 
 .section{
-    padding:15px;
+  padding:20px 0;
 }
 
-.section-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:10px;
+.section-title{
+  display:flex;
+  justify-content:space-between;
+  padding:0 15px;
+  margin-bottom:15px;
+  font-size:18px;
 }
 
-.section-header h2{
-    margin:0;
-    font-size:18px;
+.channels{
+  display:flex;
+  overflow-x:auto;
+  padding:0 15px;
+  gap:15px;
 }
 
-.view-all{
-    color:#ccc;
-    font-size:14px;
-}
-
-.channel-row{
-    display:flex;
-    overflow-x:auto;
-    gap:15px;
-    padding-bottom:10px;
+.channels::-webkit-scrollbar{
+  display:none;
 }
 
 .channel{
-    min-width:80px;
-    text-align:center;
-    cursor:pointer;
+  flex:0 0 22%;
+  text-align:center;
+  cursor:pointer;
 }
 
 .channel img{
-    width:80px;
-    height:80px;
-    border-radius:50%;
-    object-fit:cover;
-    background:white;
+  width:100%;
+  aspect-ratio:1/1;
+  border-radius:50%;
+  object-fit:cover;
+  background:white;
 }
 
-.channel p{
-    margin-top:5px;
-    font-size:13px;
+.channel-name{
+  margin-top:8px;
+  font-size:13px;
 }
 </style>
 </head>
-
 <body>
 
-<video id="videoPlayer" controls></video>
+<div class="player">
+  <video id="videoPlayer" controls playsinline></video>
+</div>
 
-<!-- ===== BANGLADESHI ===== -->
 <div class="section">
-<div class="section-header">
-<h2>বাংলাদেশি চ্যানেল</h2>
-<span class="view-all">View All</span>
+  <div class="section-title">
+    <span>বাংলাদেশি চ্যানেল</span>
+    <span>View All</span>
+  </div>
+  <div class="channels" id="bdChannels"></div>
 </div>
 
-<div class="channel-row">
-<!-- 10 Channels -->
-<div class="channel" onclick="playChannel('YOUR_M3U8_LINK1')">
-<img src="logos/logo1.png">
-<p>Channel 1</p>
-</div>
-
-<div class="channel" onclick="playChannel('YOUR_M3U8_LINK2')">
-<img src="logos/logo2.png">
-<p>Channel 2</p>
-</div>
-
-<div class="channel" onclick="playChannel('YOUR_M3U8_LINK3')">
-<img src="logos/logo3.png">
-<p>Channel 3</p>
-</div>
-
-<div class="channel" onclick="playChannel('YOUR_M3U8_LINK4')">
-<img src="logos/logo4.png">
-<p>Channel 4</p>
-</div>
-
-<div class="channel" onclick="playChannel('YOUR_M3U8_LINK5')">
-<img src="logos/logo5.png">
-<p>Channel 5</p>
-</div>
-
-<div class="channel" onclick="playChannel('YOUR_M3U8_LINK6')">
-<img src="logos/logo6.png">
-<p>Channel 6</p>
-</div>
-
-<div class="channel" onclick="playChannel('YOUR_M3U8_LINK7')">
-<img src="logos/logo7.png">
-<p>Channel 7</p>
-</div>
-
-<div class="channel" onclick="playChannel('YOUR_M3U8_LINK8')">
-<img src="logos/logo8.png">
-<p>Channel 8</p>
-</div>
-
-<div class="channel" onclick="playChannel('YOUR_M3U8_LINK9')">
-<img src="logos/logo9.png">
-<p>Channel 9</p>
-</div>
-
-<div class="channel" onclick="playChannel('YOUR_M3U8_LINK10')">
-<img src="logos/logo10.png">
-<p>Channel 10</p>
-</div>
-</div>
-</div>
-
-<!-- ===== SPORTS ===== -->
 <div class="section">
-<div class="section-header">
-<h2>Sports Channels</h2>
-<span class="view-all">View All</span>
+  <div class="section-title">
+    <span>Sports Channels</span>
+    <span>View All</span>
+  </div>
+  <div class="channels" id="sportsChannels"></div>
 </div>
 
-<div class="channel-row">
-
-<!-- 10 Sports -->
-<div class="channel" onclick="playChannel('SPORT_LINK1')">
-<img src="logos/s1.png">
-<p>Sports 1</p>
-</div>
-
-<div class="channel" onclick="playChannel('SPORT_LINK2')">
-<img src="logos/s2.png">
-<p>Sports 2</p>
-</div>
-
-<div class="channel" onclick="playChannel('SPORT_LINK3')">
-<img src="logos/s3.png">
-<p>Sports 3</p>
-</div>
-
-<div class="channel" onclick="playChannel('SPORT_LINK4')">
-<img src="logos/s4.png">
-<p>Sports 4</p>
-</div>
-
-<div class="channel" onclick="playChannel('SPORT_LINK5')">
-<img src="logos/s5.png">
-<p>Sports 5</p>
-</div>
-
-<div class="channel" onclick="playChannel('SPORT_LINK6')">
-<img src="logos/s6.png">
-<p>Sports 6</p>
-</div>
-
-<div class="channel" onclick="playChannel('SPORT_LINK7')">
-<img src="logos/s7.png">
-<p>Sports 7</p>
-</div>
-
-<div class="channel" onclick="playChannel('SPORT_LINK8')">
-<img src="logos/s8.png">
-<p>Sports 8</p>
-</div>
-
-<div class="channel" onclick="playChannel('SPORT_LINK9')">
-<img src="logos/s9.png">
-<p>Sports 9</p>
-</div>
-
-<div class="channel" onclick="playChannel('SPORT_LINK10')">
-<img src="logos/s10.png">
-<p>Sports 10</p>
-</div>
-
-</div>
-</div>
-
-<!-- ===== NEWS ===== -->
 <div class="section">
-<div class="section-header">
-<h2>News Channels</h2>
-<span class="view-all">View All</span>
+  <div class="section-title">
+    <span>News Channels</span>
+    <span>View All</span>
+  </div>
+  <div class="channels" id="newsChannels"></div>
 </div>
 
-<div class="channel-row">
-
-<!-- 10 News -->
-<div class="channel" onclick="playChannel('NEWS1')">
-<img src="logos/n1.png">
-<p>News 1</p>
-</div>
-
-<div class="channel" onclick="playChannel('NEWS2')">
-<img src="logos/n2.png">
-<p>News 2</p>
-</div>
-
-<div class="channel" onclick="playChannel('NEWS3')">
-<img src="logos/n3.png">
-<p>News 3</p>
-</div>
-
-<div class="channel" onclick="playChannel('NEWS4')">
-<img src="logos/n4.png">
-<p>News 4</p>
-</div>
-
-<div class="channel" onclick="playChannel('NEWS5')">
-<img src="logos/n5.png">
-<p>News 5</p>
-</div>
-
-<div class="channel" onclick="playChannel('NEWS6')">
-<img src="logos/n6.png">
-<p>News 6</p>
-</div>
-
-<div class="channel" onclick="playChannel('NEWS7')">
-<img src="logos/n7.png">
-<p>News 7</p>
-</div>
-
-<div class="channel" onclick="playChannel('NEWS8')">
-<img src="logos/n8.png">
-<p>News 8</p>
-</div>
-
-<div class="channel" onclick="playChannel('NEWS9')">
-<img src="logos/n9.png">
-<p>News 9</p>
-</div>
-
-<div class="channel" onclick="playChannel('NEWS10')">
-<img src="logos/n10.png">
-<p>News 10</p>
-</div>
-
-</div>
-</div>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
 <script>
+
+/* ====== এখানে শুধু লিংক/নাম বদলাবে ====== */
+
+const banglaChannels = [
+  { name:"Channel 1", logo:"logos/ch1.png", link:"LINK1" },
+  { name:"Channel 2", logo:"logos/ch2.png", link:"LINK2" },
+  { name:"Channel 3", logo:"logos/ch3.png", link:"LINK3" },
+  { name:"Channel 4", logo:"logos/ch4.png", link:"LINK4" },
+  { name:"Channel 5", logo:"logos/ch5.png", link:"LINK5" },
+  { name:"Channel 6", logo:"logos/ch6.png", link:"LINK6" },
+  { name:"Channel 7", logo:"logos/ch7.png", link:"LINK7" },
+  { name:"Channel 8", logo:"logos/ch8.png", link:"LINK8" },
+  { name:"Channel 9", logo:"logos/ch9.png", link:"LINK9" },
+  { name:"Channel 10", logo:"logos/ch10.png", link:"LINK10" }
+];
+
+const sportsChannels = [
+  { name:"Sports 1", logo:"logos/s1.png", link:"LINK11" },
+  { name:"Sports 2", logo:"logos/s2.png", link:"LINK12" },
+  { name:"Sports 3", logo:"logos/s3.png", link:"LINK13" },
+  { name:"Sports 4", logo:"logos/s4.png", link:"LINK14" },
+  { name:"Sports 5", logo:"logos/s5.png", link:"LINK15" },
+  { name:"Sports 6", logo:"logos/s6.png", link:"LINK16" },
+  { name:"Sports 7", logo:"logos/s7.png", link:"LINK17" },
+  { name:"Sports 8", logo:"logos/s8.png", link:"LINK18" },
+  { name:"Sports 9", logo:"logos/s9.png", link:"LINK19" },
+  { name:"Sports 10", logo:"logos/s10.png", link:"LINK20" }
+];
+
+const newsChannels = [
+  { name:"News 1", logo:"logos/n1.png", link:"LINK21" },
+  { name:"News 2", logo:"logos/n2.png", link:"LINK22" },
+  { name:"News 3", logo:"logos/n3.png", link:"LINK23" },
+  { name:"News 4", logo:"logos/n4.png", link:"LINK24" },
+  { name:"News 5", logo:"logos/n5.png", link:"LINK25" },
+  { name:"News 6", logo:"logos/n6.png", link:"LINK26" },
+  { name:"News 7", logo:"logos/n7.png", link:"LINK27" },
+  { name:"News 8", logo:"logos/n8.png", link:"LINK28" },
+  { name:"News 9", logo:"logos/n9.png", link:"LINK29" },
+  { name:"News 10", logo:"logos/n10.png", link:"LINK30" }
+];
+
+/* ====== নিচে কিছু বদলাবে না ====== */
+
+let currentList = [];
+let currentIndex = 0;
 let hls = null;
-const video = document.getElementById("videoPlayer");
+
+function createChannels(list, containerId){
+  const container = document.getElementById(containerId);
+  container.innerHTML = "";
+  list.forEach((channel,index) => {
+    const div = document.createElement("div");
+    div.className = "channel";
+    div.onclick = function(){ startPlayback(list,index) };
+    div.innerHTML = `
+      <img src="${channel.logo}">
+      <div class="channel-name">${channel.name}</div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+createChannels(banglaChannels,"bdChannels");
+createChannels(sportsChannels,"sportsChannels");
+createChannels(newsChannels,"newsChannels");
+
+function startPlayback(list,index){
+  currentList = list;
+  currentIndex = index;
+  playChannel(list[index].link);
+}
 
 function playChannel(url){
+  const video = document.getElementById("videoPlayer");
 
-    video.pause();
-    video.removeAttribute("src");
-    video.load();
+  video.pause();
+  video.removeAttribute("src");
+  video.load();
 
-    if(hls){
-        hls.destroy();
-        hls = null;
-    }
+  if(hls){
+    hls.destroy();
+    hls = null;
+  }
 
-    if(Hls.isSupported()){
-        hls = new Hls({
-            maxBufferLength:10,
-            maxMaxBufferLength:20
-        });
+  if (Hls.isSupported()) {
 
-        hls.loadSource(url);
-        hls.attachMedia(video);
+      hls = new Hls({
+        maxBufferLength:8,
+        maxMaxBufferLength:15
+      });
 
-        hls.on(Hls.Events.MANIFEST_PARSED,function(){
-            video.play();
-        });
+      hls.loadSource(url);
+      hls.attachMedia(video);
 
-    }else{
-        video.src = url;
-        video.play();
-    }
+      hls.on(Hls.Events.MANIFEST_PARSED,function() {
+          video.play();
+      });
+
+      hls.on(Hls.Events.ERROR, function (event, data) {
+          if(data.fatal){
+              playNextChannel();
+          }
+      });
+
+  } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      video.src = url;
+      video.play();
+      video.onerror = function(){
+        playNextChannel();
+      };
+  }
 }
+
+function playNextChannel(){
+  currentIndex++;
+  if(currentIndex < currentList.length){
+    playChannel(currentList[currentIndex].link);
+  }
+}
+
 </script>
 
 </body>
