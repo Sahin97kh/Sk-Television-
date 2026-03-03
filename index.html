@@ -13,13 +13,13 @@ body{
   color:white;
 }
 
-/* Video Player Top */
+/* Video Player */
 .player{
   width:100%;
-  background:black;
   position:sticky;
   top:0;
   z-index:1000;
+  background:black;
 }
 
 video{
@@ -30,7 +30,7 @@ video{
 
 /* Section */
 .section{
-  padding:15px;
+  padding:15px 10px;
 }
 
 .section-title{
@@ -40,15 +40,21 @@ video{
   font-size:18px;
 }
 
-/* 4 channel per row */
+/* Horizontal Slide System */
 .channels{
-  display:grid;
-  grid-template-columns: repeat(4, 1fr);
+  display:flex;
+  overflow-x:auto;
   gap:15px;
+  scroll-behavior:smooth;
+  padding-bottom:10px;
+}
+
+.channels::-webkit-scrollbar{
+  display:none;
 }
 
 .channel{
-  width:100%;
+  flex:0 0 22%;
   aspect-ratio:1/1;
   border-radius:50%;
   overflow:hidden;
@@ -65,7 +71,6 @@ video{
 </head>
 <body>
 
-<!-- Video Player -->
 <div class="player">
   <video id="videoPlayer" controls autoplay>
     <source id="videoSource" src="" type="application/x-mpegURL">
@@ -79,6 +84,7 @@ video{
     <span>View All</span>
   </div>
   <div class="channels">
+
     <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=1"></div>
     <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=2"></div>
     <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=3"></div>
@@ -89,6 +95,7 @@ video{
     <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=8"></div>
     <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=9"></div>
     <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=10"></div>
+
   </div>
 </div>
 
@@ -99,6 +106,7 @@ video{
     <span>View All</span>
   </div>
   <div class="channels">
+
     <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=S1"></div>
     <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=S2"></div>
     <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=S3"></div>
@@ -109,6 +117,7 @@ video{
     <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=S8"></div>
     <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=S9"></div>
     <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=S10"></div>
+
   </div>
 </div>
 
@@ -119,6 +128,7 @@ video{
     <span>View All</span>
   </div>
   <div class="channels">
+
     <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=N1"></div>
     <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=N2"></div>
     <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=N3"></div>
@@ -129,6 +139,7 @@ video{
     <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=N8"></div>
     <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=N9"></div>
     <div class="channel" onclick="playChannel(testLink)"><img src="https://via.placeholder.com/150?text=N10"></div>
+
   </div>
 </div>
 
