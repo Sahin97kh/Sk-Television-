@@ -12,16 +12,27 @@ margin:0;
 font-family:Arial,sans-serif;
 background:#0b0014;
 color:white;
-padding-top:220px;
+padding-top:230px;
 }
 
 .player{
 position:fixed;
-top:0;
-left:0;
-width:100%;
+top:6px;
+left:8px;
+right:8px;
+width:auto;
 background:black;
 z-index:1000;
+border:2px solid #7a00ff;
+box-shadow:0 0 12px rgba(122,0,255,0.7);
+border-radius:10px;
+transition:0.4s;
+overflow:hidden;
+}
+
+.player.playing{
+border:none;
+box-shadow:none;
 }
 
 video{
@@ -103,20 +114,16 @@ margin-top:8px;
 font-size:13px;
 }
 
-/* mobile highlight */
-
 .channel.active img{
 border:1.5px solid #7dffc0;
 box-shadow:0 0 6px rgba(125,255,192,0.6);
 }
 
-/* PC */
-
 @media (min-width:900px){
 
 video{height:420px;}
 #videoPlaceholder{height:420px;}
-body{padding-top:420px;}
+body{padding-top:450px;}
 
 .channel{flex:0 0 120px;}
 
@@ -186,10 +193,10 @@ box-shadow:0 0 10px rgba(125,255,192,0.8);
 
 <div class="section">
 <div class="section-title">
-<span>News Channels</span>
+<span>English Channels</span>
 <span>View All</span>
 </div>
-<div class="channels" id="newsChannels"></div>
+<div class="channels" id="englishChannels"></div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
@@ -215,7 +222,7 @@ const banglaChannels=[
 
 const indianChannels=[
 {name:"PTC Music",logo:"logos/images (7).jpeg",link:"https://d2lk5u59tns74c.cloudfront.net/out/v1/f913cf893c594f73b114216e74a2efbc/index_4.m3u8"},
-{name:"Enteer Ten",logo:"logos/images (11).jpeg",link:"https://live-bangla.akamaized.net/liveabr/pub-iobanglakp3sff/live_240p/chunks.m3u8"},
+{name:"Goldmines",logo:"logos/channels4_profile (3).jpg",link:"https://cdn-2.pishow.tv/live/1461/1461_1.m3u8"},
 {name:"Star Gold",logo:"logos/images (8).jpeg",link:"http://103.99.249.139/stargold/tracks-v1a1/mono.m3u8"},
 {name:"Moon TV",logo:"logos/images (9).jpeg",link:"https://player.mslivestream.net/mslive/e10bb900976df9177b9a080314f26f86.sdp/chunks.m3u8"},
 {name:"Indian 5",logo:"logos/s5.png",link:"LINK15"},
@@ -226,17 +233,17 @@ const indianChannels=[
 {name:"Indian 10",logo:"logos/s10.png",link:"LINK20"}
 ];
 
-const newsChannels=[
-{name:"News 1",logo:"logos/n1.png",link:"LINK21"},
-{name:"News 2",logo:"logos/n2.png",link:"LINK22"},
-{name:"News 3",logo:"logos/n3.png",link:"LINK23"},
-{name:"News 4",logo:"logos/n4.png",link:"LINK24"},
-{name:"News 5",logo:"logos/n5.png",link:"LINK25"},
-{name:"News 6",logo:"logos/n6.png",link:"LINK26"},
-{name:"News 7",logo:"logos/n7.png",link:"LINK27"},
-{name:"News 8",logo:"logos/n8.png",link:"LINK28"},
-{name:"News 9",logo:"logos/n9.png",link:"LINK29"},
-{name:"News 10",logo:"logos/n10.png",link:"LINK30"}
+const englishChannels=[
+{name:"CNN",logo:"logos/cnn.png",link:"LINK21"},
+{name:"BBC World",logo:"logos/bbc.png",link:"LINK22"},
+{name:"Sky News",logo:"logos/sky.png",link:"LINK23"},
+{name:"Fox News",logo:"logos/fox.png",link:"LINK24"},
+{name:"CNBC",logo:"logos/cnbc.png",link:"LINK25"},
+{name:"Bloomberg",logo:"logos/bloomberg.png",link:"LINK26"},
+{name:"France 24",logo:"logos/france24.png",link:"LINK27"},
+{name:"DW News",logo:"logos/dw.png",link:"LINK28"},
+{name:"ABC News",logo:"logos/abc.png",link:"LINK29"},
+{name:"NBC News",logo:"logos/nbc.png",link:"LINK30"}
 ];
 
 function createChannels(list,id){
@@ -250,6 +257,8 @@ const div=document.createElement("div");
 div.className="channel";
 
 div.onclick=function(){
+
+document.querySelector(".player").classList.add("playing");
 
 currentList=list;
 currentIndex=index;
@@ -275,20 +284,6 @@ container.appendChild(div);
 
 }
 
-function scrollActiveChannel(){
-
-const active=document.querySelector(".channel.active");
-
-if(active){
-active.scrollIntoView({
-behavior:"smooth",
-inline:"center",
-block:"nearest"
-});
-}
-
-}
-
 function updateActiveChannel(){
 
 document.querySelectorAll(".channel").forEach(c=>{
@@ -299,13 +294,10 @@ const lists=document.querySelectorAll(".channels");
 
 lists.forEach(list=>{
 const items=list.querySelectorAll(".channel");
-
 if(items[currentIndex]){
 items[currentIndex].classList.add("active");
 }
 });
-
-scrollActiveChannel();
 
 }
 
@@ -353,7 +345,7 @@ playChannel(currentList[currentIndex].link);
 
 createChannels(banglaChannels,"bdChannels");
 createChannels(indianChannels,"indianChannels");
-createChannels(newsChannels,"newsChannels");
+createChannels(englishChannels,"englishChannels");
 
 </script>
 
