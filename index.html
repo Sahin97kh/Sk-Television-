@@ -7,220 +7,173 @@
 
 <style>
 body{
-  margin:0;
-  font-family: Arial, sans-serif;
-  background:#0b0014;
-  color:white;
+margin:0;
+font-family: Arial, sans-serif;
+background:#0b0014;
+color:white;
 }
 
 .player{
-  position:sticky;
-  top:0;
-  background:black;
-  z-index:1000;
+position:sticky;
+top:0;
+background:black;
+z-index:1000;
 }
 
 video{
-  width:100%;
-  height:220px;
-  background:black;
+width:100%;
+height:220px;
+background:black;
 }
 
 .section{
-  padding:20px 0;
+padding:20px 0;
 }
 
 .section-title{
-  display:flex;
-  justify-content:space-between;
-  padding:0 15px;
-  margin-bottom:15px;
-  font-size:18px;
+display:flex;
+justify-content:space-between;
+padding:0 15px;
+margin-bottom:15px;
+font-size:18px;
 }
 
 .channels{
-  display:flex;
-  overflow-x:auto;
-  padding:0 15px;
-  gap:15px;
+display:flex;
+overflow-x:auto;
+padding:0 15px;
+gap:15px;
 }
 
 .channels::-webkit-scrollbar{
-  display:none;
+display:none;
 }
 
 .channel{
-  flex:0 0 22%;
-  text-align:center;
-  cursor:pointer;
+flex:0 0 22%;
+text-align:center;
+cursor:pointer;
 }
 
 .channel img{
-  width:100%;
-  aspect-ratio:1/1;
-  border-radius:50%;
-  object-fit:cover;
-  background:white;
+width:100%;
+aspect-ratio:1/1;
+border-radius:50%;
+object-fit:cover;
+background:white;
 }
 
 .channel-name{
-  margin-top:8px;
-  font-size:13px;
+margin-top:8px;
+font-size:13px;
 }
 </style>
 </head>
 <body>
 
 <div class="player">
-  <video id="videoPlayer" controls playsinline></video>
+<video id="videoPlayer" controls playsinline></video>
 </div>
 
 <div class="section">
-  <div class="section-title">
-    <span>বাংলাদেশি চ্যানেল</span>
-    <span>View All</span>
-  </div>
-  <div class="channels" id="bdChannels"></div>
+<div class="section-title">
+<span>বাংলাদেশি চ্যানেল</span>
+<span>View All</span>
+</div>
+<div class="channels" id="bdChannels"></div>
 </div>
 
 <div class="section">
-  <div class="section-title">
-    <span>Sports Channels</span>
-    <span>View All</span>
-  </div>
-  <div class="channels" id="sportsChannels"></div>
+<div class="section-title">
+<span>Indian TV</span>
+<span>View All</span>
+</div>
+<div class="channels" id="indianChannels"></div>
 </div>
 
 <div class="section">
-  <div class="section-title">
-    <span>News Channels</span>
-    <span>View All</span>
-  </div>
-  <div class="channels" id="newsChannels"></div>
+<div class="section-title">
+<span>News Channels</span>
+<span>View All</span>
+</div>
+<div class="channels" id="newsChannels"></div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
 <script>
 
-/* ====== এখানে শুধু লিংক/নাম বদলাবে ====== */
-
 const banglaChannels = [
-  { name:"Ekhon TV", logo:"logos/images.jpeg", link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1713/output/1713-audio_113432_eng=113200-video=2202800.m3u8" },
-  { name:"ATN Bangla", logo:"logos/images.png", link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1722/output/1722-audio_113522_eng=113200-video=2202800.m3u8" },
-  { name:"71 TV", logo:"logos/IMG_20260303_225626.jpg", link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1705/output/1705-audio_113352_eng=113200-video=2202800.m3u8" },
-  { name:"BTV", logo:"logos/images (2).jpeg", link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1709/output/1709-audio_113392_eng=113200-video=2202800.m3u8" },
-  { name:"Jamuna Tv", logo:"logos/channels4_profile (1).jpg", link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1701/output/1701-audio_113312_eng=113200-video=1181200.m3u8" },
-  { name:"Bangla Vison", logo:"logos/images (3).jpeg", link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1715/output/1715-audio_113452_eng=113200-video=2202800.m3u8" },
-  { name:"Somoy Tv", logo:"logos/images (1).png", link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1702/output/1702-audio_113322_eng=113200-video=2202800.m3u8" },
-  { name:"Gazi Tv", logo:"logos/images (10).jpeg", link:"http://tvn1.chowdhury-shaheb.com/gazitv/index.m3u8" },
-  { name:"NTV", logo:"logos/images (2).png", link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1716/output/index.m3u8" },
-  { name:"SRK TV", logo:"logos/images (6).jpeg", link:"https://srknowapp.ncare.live/srktvhlswodrm/srktv.stream/tracks-v1a1/mono.m3u8" }
+{ name:"Ekhon TV", logo:"logos/images.jpeg", link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1713/output/1713-audio_113432_eng=113200-video=2202800.m3u8" },
+{ name:"ATN Bangla", logo:"logos/images.png", link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1722/output/1722-audio_113522_eng=113200-video=2202800.m3u8" },
+{ name:"71 TV", logo:"logos/IMG_20260303_225626.jpg", link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1705/output/1705-audio_113352_eng=113200-video=2202800.m3u8" },
+{ name:"BTV", logo:"logos/images (2).jpeg", link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1709/output/1709-audio_113392_eng=113200-video=2202800.m3u8" },
+{ name:"Jamuna Tv", logo:"logos/channels4_profile (1).jpg", link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1701/output/1701-audio_113312_eng=113200-video=1181200.m3u8" },
+{ name:"Bangla Vison", logo:"logos/images (3).jpeg", link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1715/output/1715-audio_113452_eng=113200-video=2202800.m3u8" },
+{ name:"Somoy Tv", logo:"logos/images (1).png", link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1702/output/1702-audio_113322_eng=113200-video=2202800.m3u8" },
+{ name:"Gazi Tv", logo:"logos/images (10).jpeg", link:"http://tvn1.chowdhury-shaheb.com/gazitv/index.m3u8" },
+{ name:"NTV", logo:"logos/images (2).png", link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1716/output/index.m3u8" },
+{ name:"SRK TV", logo:"logos/images (6).jpeg", link:"https://srknowapp.ncare.live/srktvhlswodrm/srktv.stream/tracks-v1a1/mono.m3u8" }
 ];
 
-const SportsChannels = [
-  { name:"PTC Music", logo:"logos/images (7).jpeg", link:"https://d2lk5u59tns74c.cloudfront.net/out/v1/f913cf893c594f73b114216e74a2efbc/index_4.m3u8" },
-  { name:"Gold Mines", logo:"logos/channels4_profile (3).jpg", link:"https://cdn-2.pishow.tv/live/1461/1461_1.m3u8" },
-  { name:"Star Gold", logo:"logos/images (8).jpeg", link:"http://103.99.249.139/stargold/tracks-v1a1/mono.m3u8" },
-  { name:"Moon Tv", logo:"logos/images (9).jpeg", link:"https://player.mslivestream.net/mslive/e10bb900976df9177b9a080314f26f86.sdp/chunks.m3u8" },
-  { name:"Sports 5", logo:"logos/s5.png", link:"LINK15" },
-  { name:"Sports 6", logo:"logos/s6.png", link:"LINK16" },
-  { name:"Sports 7", logo:"logos/s7.png", link:"LINK17" },
-  { name:"Sports 8", logo:"logos/s8.png", link:"LINK18" },
-  { name:"Sports 9", logo:"logos/s9.png", link:"LINK19" },
-  { name:"Sports 10", logo:"logos/s10.png", link:"LINK20" }
+const indianChannels = [
+{ name:"PTC Music", logo:"logos/images (7).jpeg", link:"https://d2lk5u59tns74c.cloudfront.net/out/v1/f913cf893c594f73b114216e74a2efbc/index_4.m3u8" },
+{ name:"Goldmines", logo:"logos/channels4_profile (3).jpg", link:"https://cdn-2.pishow.tv/live/1461/1461_1.m3u8" },
+{ name:"Star Gold", logo:"logos/images (8).jpeg", link:"http://103.99.249.139/stargold/tracks-v1a1/mono.m3u8" },
+{ name:"Moon TV", logo:"logos/images (9).jpeg", link:"https://player.mslivestream.net/mslive/e10bb900976df9177b9a080314f26f86.sdp/chunks.m3u8" },
+{ name:"Indian 5", logo:"logos/s5.png", link:"LINK15" },
+{ name:"Indian 6", logo:"logos/s6.png", link:"LINK16" },
+{ name:"Indian 7", logo:"logos/s7.png", link:"LINK17" },
+{ name:"Indian 8", logo:"logos/s8.png", link:"LINK18" },
+{ name:"Indian 9", logo:"logos/s9.png", link:"LINK19" },
+{ name:"Indian 10", logo:"logos/s10.png", link:"LINK20" }
 ];
 
 const newsChannels = [
-  { name:"News 1", logo:"logos/n1.png", link:"LINK21" },
-  { name:"News 2", logo:"logos/n2.png", link:"LINK22" },
-  { name:"News 3", logo:"logos/n3.png", link:"LINK23" },
-  { name:"News 4", logo:"logos/n4.png", link:"LINK24" },
-  { name:"News 5", logo:"logos/n5.png", link:"LINK25" },
-  { name:"News 6", logo:"logos/n6.png", link:"LINK26" },
-  { name:"News 7", logo:"logos/n7.png", link:"LINK27" },
-  { name:"News 8", logo:"logos/n8.png", link:"LINK28" },
-  { name:"News 9", logo:"logos/n9.png", link:"LINK29" },
-  { name:"News 10", logo:"logos/n10.png", link:"LINK30" }
+{ name:"News 1", logo:"logos/n1.png", link:"LINK21" },
+{ name:"News 2", logo:"logos/n2.png", link:"LINK22" },
+{ name:"News 3", logo:"logos/n3.png", link:"LINK23" },
+{ name:"News 4", logo:"logos/n4.png", link:"LINK24" },
+{ name:"News 5", logo:"logos/n5.png", link:"LINK25" },
+{ name:"News 6", logo:"logos/n6.png", link:"LINK26" },
+{ name:"News 7", logo:"logos/n7.png", link:"LINK27" },
+{ name:"News 8", logo:"logos/n8.png", link:"LINK28" },
+{ name:"News 9", logo:"logos/n9.png", link:"LINK29" },
+{ name:"News 10", logo:"logos/n10.png", link:"LINK30" }
 ];
 
-/* ====== নিচে কিছু বদলাবে না ====== */
+let hls=null;
 
-let currentList = [];
-let currentIndex = 0;
-let hls = null;
-
-function createChannels(list, containerId){
-  const container = document.getElementById(containerId);
-  container.innerHTML = "";
-  list.forEach((channel,index) => {
-    const div = document.createElement("div");
-    div.className = "channel";
-    div.onclick = function(){ startPlayback(list,index) };
-    div.innerHTML = `
-      <img src="${channel.logo}">
-      <div class="channel-name">${channel.name}</div>
-    `;
-    container.appendChild(div);
-  });
+function createChannels(list,id){
+const container=document.getElementById(id);
+container.innerHTML="";
+list.forEach((c,i)=>{
+const div=document.createElement("div");
+div.className="channel";
+div.onclick=function(){playChannel(c.link)};
+div.innerHTML=`<img src="${c.logo}"><div class="channel-name">${c.name}</div>`;
+container.appendChild(div);
+});
 }
 
 createChannels(banglaChannels,"bdChannels");
-createChannels(sportsChannels,"sportsChannels");
+createChannels(indianChannels,"indianChannels");
 createChannels(newsChannels,"newsChannels");
 
-function startPlayback(list,index){
-  currentList = list;
-  currentIndex = index;
-  playChannel(list[index].link);
-}
-
 function playChannel(url){
-  const video = document.getElementById("videoPlayer");
+const video=document.getElementById("videoPlayer");
 
-  video.pause();
-  video.removeAttribute("src");
-  video.load();
+if(hls){hls.destroy();}
 
-  if(hls){
-    hls.destroy();
-    hls = null;
-  }
-
-  if (Hls.isSupported()) {
-
-      hls = new Hls({
-        maxBufferLength:8,
-        maxMaxBufferLength:15
-      });
-
-      hls.loadSource(url);
-      hls.attachMedia(video);
-
-      hls.on(Hls.Events.MANIFEST_PARSED,function() {
-          video.play();
-      });
-
-      hls.on(Hls.Events.ERROR, function (event, data) {
-          if(data.fatal){
-              playNextChannel();
-          }
-      });
-
-  } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      video.src = url;
-      video.play();
-      video.onerror = function(){
-        playNextChannel();
-      };
-  }
+if(Hls.isSupported()){
+hls=new Hls();
+hls.loadSource(url);
+hls.attachMedia(video);
+hls.on(Hls.Events.MANIFEST_PARSED,function(){video.play();});
+}else{
+video.src=url;
+video.play();
 }
-
-function playNextChannel(){
-  currentIndex++;
-  if(currentIndex < currentList.length){
-    playChannel(currentList[currentIndex].link);
-  }
 }
 
 </script>
