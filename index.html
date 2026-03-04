@@ -12,27 +12,16 @@ margin:0;
 font-family:Arial,sans-serif;
 background:#0b0014;
 color:white;
-padding-top:230px;
+padding-top:220px;
 }
 
 .player{
 position:fixed;
-top:6px;
-left:8px;
-right:8px;
-width:auto;
+top:0;
+left:0;
+width:100%;
 background:black;
 z-index:1000;
-border:2px solid #7a00ff;
-box-shadow:0 0 12px rgba(122,0,255,0.7);
-border-radius:10px;
-transition:0.4s;
-overflow:hidden;
-}
-
-.player.playing{
-border:none;
-box-shadow:none;
 }
 
 video{
@@ -114,16 +103,20 @@ margin-top:8px;
 font-size:13px;
 }
 
+/* mobile highlight */
+
 .channel.active img{
 border:1.5px solid #7dffc0;
 box-shadow:0 0 6px rgba(125,255,192,0.6);
 }
 
+/* PC */
+
 @media (min-width:900px){
 
 video{height:420px;}
 #videoPlaceholder{height:420px;}
-body{padding-top:450px;}
+body{padding-top:420px;}
 
 .channel{flex:0 0 120px;}
 
@@ -257,8 +250,6 @@ const div=document.createElement("div");
 div.className="channel";
 
 div.onclick=function(){
-
-document.querySelector(".player").classList.add("playing");
 
 currentList=list;
 currentIndex=index;
