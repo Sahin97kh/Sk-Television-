@@ -12,20 +12,24 @@ margin:0;
 font-family:Arial,sans-serif;
 background:#0b0014;
 color:white;
-padding-top:220px;
+padding-top:230px;
 }
+
+/* PLAYER */
 
 .player{
 position:fixed;
-top:0;
-left:0;
-width:100%;
+top:6px;
+left:8px;
+right:8px;
+width:auto;
 background:black;
 z-index:1000;
-border:2px solid #5a00a8;
-box-shadow:0 0 12px rgba(90,0,168,0.6);
-border-radius:8px;
+border:2px solid #7a00ff;
+box-shadow:0 0 12px rgba(122,0,255,0.7);
+border-radius:10px;
 transition:0.4s;
+overflow:hidden;
 }
 
 .player.playing{
@@ -33,11 +37,15 @@ border:none;
 box-shadow:none;
 }
 
+/* VIDEO */
+
 video{
 width:100%;
 height:220px;
 background:black;
 }
+
+/* PLACEHOLDER */
 
 #videoPlaceholder{
 position:absolute;
@@ -54,6 +62,8 @@ background:black;
 color:white;
 }
 
+/* BUTTONS */
+
 #prevBtn,#nextBtn{
 display:none;
 }
@@ -69,6 +79,8 @@ font-size:14px;
 opacity:0;
 transition:opacity 0.6s;
 }
+
+/* SECTIONS */
 
 .section{
 padding:10px 0;
@@ -93,6 +105,8 @@ gap:15px;
 display:none;
 }
 
+/* CHANNEL */
+
 .channel{
 flex:0 0 22%;
 text-align:center;
@@ -112,16 +126,20 @@ margin-top:8px;
 font-size:13px;
 }
 
+/* MOBILE ACTIVE */
+
 .channel.active img{
 border:1.5px solid #7dffc0;
 box-shadow:0 0 6px rgba(125,255,192,0.6);
 }
 
+/* PC STYLE */
+
 @media (min-width:900px){
 
 video{height:420px;}
 #videoPlaceholder{height:420px;}
-body{padding-top:420px;}
+body{padding-top:450px;}
 
 .channel{flex:0 0 120px;}
 
@@ -173,6 +191,8 @@ box-shadow:0 0 10px rgba(125,255,192,0.8);
 
 </div>
 
+<!-- BANGLA -->
+
 <div class="section">
 <div class="section-title">
 <span>বাংলাদেশি চ্যানেল</span>
@@ -181,6 +201,8 @@ box-shadow:0 0 10px rgba(125,255,192,0.8);
 <div class="channels" id="bdChannels"></div>
 </div>
 
+<!-- INDIAN -->
+
 <div class="section">
 <div class="section-title">
 <span>Indian Channels</span>
@@ -188,6 +210,8 @@ box-shadow:0 0 10px rgba(125,255,192,0.8);
 </div>
 <div class="channels" id="indianChannels"></div>
 </div>
+
+<!-- NEWS -->
 
 <div class="section">
 <div class="section-title">
@@ -204,6 +228,8 @@ box-shadow:0 0 10px rgba(125,255,192,0.8);
 let currentList=[];
 let currentIndex=0;
 let hls=null;
+
+/* CHANNEL LIST */
 
 const banglaChannels=[
 {name:"Ekhon TV",logo:"logos/images.jpeg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1713/output/1713-audio_113432_eng=113200-video=2202800.m3u8"},
@@ -244,6 +270,8 @@ const newsChannels=[
 {name:"News 10",logo:"logos/n10.png",link:"LINK30"}
 ];
 
+/* CREATE CHANNELS */
+
 function createChannels(list,id){
 
 const container=document.getElementById(id);
@@ -282,19 +310,7 @@ container.appendChild(div);
 
 }
 
-function scrollActiveChannel(){
-
-const active=document.querySelector(".channel.active");
-
-if(active){
-active.scrollIntoView({
-behavior:"smooth",
-inline:"center",
-block:"nearest"
-});
-}
-
-}
+/* ACTIVE CHANNEL */
 
 function updateActiveChannel(){
 
@@ -306,15 +322,14 @@ const lists=document.querySelectorAll(".channels");
 
 lists.forEach(list=>{
 const items=list.querySelectorAll(".channel");
-
 if(items[currentIndex]){
 items[currentIndex].classList.add("active");
 }
 });
 
-scrollActiveChannel();
-
 }
+
+/* PLAY VIDEO */
 
 function playChannel(url){
 
@@ -337,6 +352,8 @@ video.play();
 }
 
 }
+
+/* NEXT PREV */
 
 document.getElementById("nextBtn").onclick=function(){
 
