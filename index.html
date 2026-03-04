@@ -168,7 +168,6 @@ div.className="channel";
 div.onclick=function(){
 
 const title=document.getElementById("channelTitle");
-
 title.innerText=c.name;
 title.style.opacity="1";
 
@@ -194,14 +193,19 @@ const video=document.getElementById("videoPlayer");
 
 if(hls){hls.destroy();}
 
-if(Hls.isSupported()){
-hls=new Hls();
-hls.loadSource(url);
-hls.attachMedia(video);
-hls.on(Hls.Events.MANIFEST_PARSED,function(){video.play();});
-}else{
+if(video.canPlayType('application/vnd.apple.mpegurl')){
 video.src=url;
 video.play();
+}else if(Hls.isSupported()){
+hls=new Hls({
+maxBufferLength:5,
+maxMaxBufferLength:10
+});
+hls.loadSource(url);
+hls.attachMedia(video);
+hls.on(Hls.Events.MANIFEST_PARSED,function(){
+video.play();
+});
 }
 }
 
