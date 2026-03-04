@@ -121,30 +121,18 @@ font-size:13px;
 
 @media (min-width:900px){
 
-video{
-height:420px;
-}
+video{height:420px;}
+#videoPlaceholder{height:420px;}
+body{padding-top:420px;}
 
-#videoPlaceholder{
-height:420px;
-}
-
-body{
-padding-top:420px;
-}
-
-.channel{
-flex:0 0 120px;
-}
+.channel{flex:0 0 120px;}
 
 .channel img{
 width:120px;
 height:120px;
 }
 
-.section-title{
-font-size:22px;
-}
+.section-title{font-size:22px;}
 
 #prevBtn,#nextBtn{
 display:block;
@@ -162,9 +150,11 @@ cursor:pointer;
 #prevBtn{left:15px;}
 #nextBtn{right:15px;}
 
+/* updated highlight */
+
 .channel.active img{
-border:1px solid #6affb2;
-box-shadow:0 0 4px rgba(106,255,178,0.5);
+border:2px solid #7dffc0;
+box-shadow:0 0 10px rgba(125,255,192,0.8);
 }
 
 }
@@ -318,7 +308,6 @@ const lists=document.querySelectorAll(".channels");
 
 lists.forEach(list=>{
 const items=list.querySelectorAll(".channel");
-
 if(items[currentIndex]){
 items[currentIndex].classList.add("active");
 }
@@ -337,15 +326,12 @@ const video=document.getElementById("videoPlayer");
 if(hls){hls.destroy();}
 
 if(Hls.isSupported()){
-
 hls=new Hls();
 hls.loadSource(url);
 hls.attachMedia(video);
-
 hls.on(Hls.Events.MANIFEST_PARSED,function(){
 video.play();
 });
-
 }else{
 video.src=url;
 video.play();
