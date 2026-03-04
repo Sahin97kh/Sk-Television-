@@ -63,6 +63,14 @@ color:red;
 font-weight:bold;
 }
 
+/* prev next button */
+
+#prevBtn,#nextBtn{
+display:none;
+}
+
+/* section */
+
 .section{
 padding:10px 0;
 }
@@ -113,6 +121,58 @@ border:1.5px solid #7dffc0;
 box-shadow:0 0 6px rgba(125,255,192,0.6);
 }
 
+/* PC MODE */
+
+@media (min-width:900px){
+
+video{
+height:420px;
+}
+
+#videoPlaceholder{
+height:420px;
+}
+
+body{
+padding-top:420px;
+}
+
+.channel{
+flex:0 0 120px;
+}
+
+.channel img{
+width:120px;
+height:120px;
+}
+
+.section-title{
+font-size:22px;
+}
+
+#prevBtn,#nextBtn{
+display:block;
+position:absolute;
+top:50%;
+transform:translateY(-50%);
+font-size:32px;
+color:white;
+background:rgba(0,0,0,0.5);
+padding:12px 16px;
+border-radius:50%;
+cursor:pointer;
+}
+
+#prevBtn{left:15px;}
+#nextBtn{right:15px;}
+
+.channel.active img{
+border:2px solid #7dffc0;
+box-shadow:0 0 10px rgba(125,255,192,0.8);
+}
+
+}
+
 </style>
 </head>
 
@@ -121,6 +181,9 @@ box-shadow:0 0 6px rgba(125,255,192,0.6);
 <div class="player">
 
 <video id="videoPlayer" controls playsinline></video>
+
+<div id="prevBtn">❮</div>
+<div id="nextBtn">❯</div>
 
 <div id="videoPlaceholder">SK Television</div>
 
@@ -163,8 +226,10 @@ box-shadow:0 0 6px rgba(125,255,192,0.6);
 <script>
 
 let hls=null;
+let currentList=[];
+let currentIndex=0;
 
-/* auto scroll */
+/* scroll */
 
 function scrollActiveChannel(){
 
@@ -180,43 +245,7 @@ block:"nearest"
 
 }
 
-/* create channels */
-
-function createChannels(list,id){
-
-const container=document.getElementById(id);
-container.innerHTML="";
-
-list.forEach((c)=>{
-
-const div=document.createElement("div");
-div.className="channel";
-
-div.onclick=function(){
-
-document.querySelectorAll(".channel").forEach(ch=>{
-ch.classList.remove("active");
-});
-
-div.classList.add("active");
-
-scrollActiveChannel();
-
-playChannel(c.link);
-
-};
-
-div.innerHTML=
-`<img src="${c.logo}">
-<div class="channel-name">${c.name}</div>`;
-
-container.appendChild(div);
-
-});
-
-}
-
-/* play channel */
+/* play */
 
 function playChannel(url){
 
@@ -240,6 +269,66 @@ video.play();
 }
 
 }
+
+/* create channel */
+
+function createChannels(list,id){
+
+const container=document.getElementById(id);
+
+list.forEach((c,index)=>{
+
+const div=document.createElement("div");
+div.className="channel";
+
+div.onclick=function(){
+
+currentList=list;
+currentIndex=index;
+
+document.querySelectorAll(".channel").forEach(ch=>{
+ch.classList.remove("active");
+});
+
+div.classList.add("active");
+
+scrollActiveChannel();
+
+playChannel(c.link);
+
+};
+
+div.innerHTML=
+`<img src="${c.logo}">
+<div class="channel-name">${c.name}</div>`;
+
+container.appendChild(div);
+
+});
+
+}
+
+/* next prev */
+
+document.getElementById("nextBtn").onclick=function(){
+
+if(currentIndex<currentList.length-1){
+currentIndex++;
+playChannel(currentList[currentIndex].link);
+scrollActiveChannel();
+}
+
+};
+
+document.getElementById("prevBtn").onclick=function(){
+
+if(currentIndex>0){
+currentIndex--;
+playChannel(currentList[currentIndex].link);
+scrollActiveChannel();
+}
+
+};
 
 /* bangla */
 
