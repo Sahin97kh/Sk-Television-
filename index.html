@@ -168,6 +168,7 @@ div.className="channel";
 div.onclick=function(){
 
 const title=document.getElementById("channelTitle");
+
 title.innerText=c.name;
 title.style.opacity="1";
 
@@ -191,21 +192,20 @@ createChannels(newsChannels,"newsChannels");
 function playChannel(url){
 const video=document.getElementById("videoPlayer");
 
-if(hls){hls.destroy();}
+if(hls){
+hls.destroy();
+}
 
-if(video.canPlayType('application/vnd.apple.mpegurl')){
-video.src=url;
-video.play();
-}else if(Hls.isSupported()){
-hls=new Hls({
-maxBufferLength:5,
-maxMaxBufferLength:10
-});
+if(Hls.isSupported()){
+hls=new Hls();
 hls.loadSource(url);
 hls.attachMedia(video);
 hls.on(Hls.Events.MANIFEST_PARSED,function(){
 video.play();
 });
+}else{
+video.src=url;
+video.play();
 }
 }
 
