@@ -45,7 +45,7 @@ background:black;
 color:white;
 }
 
-/* running notice */
+/* RUNNING TEXT */
 
 #runningText{
 position:absolute;
@@ -63,8 +63,11 @@ color:red;
 font-weight:bold;
 }
 
-#prevBtn,#nextBtn{
-display:none;
+/* highlight */
+
+.channel.active img{
+border:1.5px solid #7dffc0;
+box-shadow:0 0 6px rgba(125,255,192,0.6);
 }
 
 .section{
@@ -109,49 +112,6 @@ margin-top:8px;
 font-size:13px;
 }
 
-.channel.active img{
-border:1.5px solid #7dffc0;
-box-shadow:0 0 6px rgba(125,255,192,0.6);
-}
-
-@media (min-width:900px){
-
-video{height:420px;}
-#videoPlaceholder{height:420px;}
-body{padding-top:420px;}
-
-.channel{flex:0 0 120px;}
-
-.channel img{
-width:120px;
-height:120px;
-}
-
-.section-title{font-size:22px;}
-
-#prevBtn,#nextBtn{
-display:block;
-position:absolute;
-top:50%;
-transform:translateY(-50%);
-font-size:32px;
-color:white;
-background:rgba(0,0,0,0.5);
-padding:12px 16px;
-border-radius:50%;
-cursor:pointer;
-}
-
-#prevBtn{left:15px;}
-#nextBtn{right:15px;}
-
-.channel.active img{
-border:2px solid #7dffc0;
-box-shadow:0 0 10px rgba(125,255,192,0.8);
-}
-
-}
-
 </style>
 </head>
 
@@ -161,15 +121,12 @@ box-shadow:0 0 10px rgba(125,255,192,0.8);
 
 <video id="videoPlayer" controls playsinline></video>
 
-<div id="prevBtn">❮</div>
-<div id="nextBtn">❯</div>
-
 <div id="videoPlaceholder">SK Television</div>
 
 <div id="runningText">
 <marquee>
-আমাদের টিভি চ্যানেলের কাজ চলছে • নতুন নতুন টিভি যুক্ত করা হচ্ছে • তাই সাময়িক সমস্যার জন্য আমরা আন্তরিকভাবে দুঃখিত • যেকোনো সমস্যার জন্য ফোন করুন 
-<span class="phone">01835303883</span> /
+আমাদের টিভি চ্যানেল এর কাজ চলছে, নতুন নতুন টিভি যুক্ত করা হচ্ছে তাই সাময়িক সমস্যার জন্য আমরা আন্তরিক ভাবে দুঃখিত। যেকোনো সমস্যার জন্য ফোন করুনঃ 
+<span class="phone">01835303883</span> অথবা 
 <span class="phone">01615303883</span>
 </marquee>
 </div>
@@ -219,7 +176,15 @@ const div=document.createElement("div");
 div.className="channel";
 
 div.onclick=function(){
+
+document.querySelectorAll(".channel").forEach(ch=>{
+ch.classList.remove("active");
+});
+
+div.classList.add("active");
+
 playChannel(c.link);
+
 };
 
 div.innerHTML=
@@ -265,14 +230,12 @@ const banglaChannels=[
 {name:"71 TV",logo:"logos/IMG_20260303_225626.jpg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1705/output/1705-audio_113352_eng=113200-video=2202800.m3u8"},
 {name:"BTV",logo:"logos/images (2).jpeg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1709/output/1709-audio_113392_eng=113200-video=2202800.m3u8"},
 {name:"Jamuna Tv",logo:"logos/channels4_profile (1).jpg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1701/output/1701-audio_113312_eng=113200-video=1181200.m3u8"},
-{name:"B Vison",logo:"logos/images (3).jpeg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1715/output/1715-audio_113452_eng=113200-video=2202800.m3u8"},
+{name:"Bangla Vision",logo:"logos/images (3).jpeg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1715/output/1715-audio_113452_eng=113200-video=2202800.m3u8"},
 {name:"Somoy Tv",logo:"logos/images (1).png",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1702/output/1702-audio_113322_eng=113200-video=2202800.m3u8"},
 {name:"Gazi Tv",logo:"logos/images (10).jpeg",link:"http://tvn1.chowdhury-shaheb.com/gazitv/index.m3u8"},
 {name:"NTV",logo:"logos/images (2).png",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1716/output/index.m3u8"},
 {name:"SRK TV",logo:"logos/images (6).jpeg",link:"https://srknowapp.ncare.live/srktvhlswodrm/srktv.stream/tracks-v1a1/mono.m3u8"}
 ];
-
-/* indian */
 
 const indianChannels=[
 {name:"PTC Music",logo:"logos/images (7).jpeg",link:"https://d2lk5u59tns74c.cloudfront.net/out/v1/f913cf893c594f73b114216e74a2efbc/index_4.m3u8"},
@@ -286,8 +249,6 @@ const indianChannels=[
 {name:"Indian 9",logo:"logos/s9.png",link:"#"},
 {name:"Indian 10",logo:"logos/s10.png",link:"#"}
 ];
-
-/* english */
 
 const englishChannels=[
 {name:"CNN",logo:"logos/cnn.png",link:"#"},
