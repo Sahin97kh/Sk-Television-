@@ -22,6 +22,15 @@ left:0;
 width:100%;
 background:black;
 z-index:1000;
+border:2px solid #5a00a8;
+box-shadow:0 0 12px rgba(90,0,168,0.6);
+border-radius:8px;
+transition:0.4s;
+}
+
+.player.playing{
+border:none;
+box-shadow:none;
 }
 
 video{
@@ -103,14 +112,10 @@ margin-top:8px;
 font-size:13px;
 }
 
-/* mobile highlight */
-
 .channel.active img{
 border:1.5px solid #7dffc0;
 box-shadow:0 0 6px rgba(125,255,192,0.6);
 }
-
-/* PC */
 
 @media (min-width:900px){
 
@@ -250,6 +255,8 @@ const div=document.createElement("div");
 div.className="channel";
 
 div.onclick=function(){
+
+document.querySelector(".player").classList.add("playing");
 
 currentList=list;
 currentIndex=index;
