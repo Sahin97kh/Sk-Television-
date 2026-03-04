@@ -11,14 +11,16 @@ margin:0;
 font-family:Arial, sans-serif;
 background:#0b0014;
 color:white;
+padding-top:220px;
 }
 
 .player{
-position:sticky;
+position:fixed;
 top:0;
+left:0;
+width:100%;
 background:black;
 z-index:1000;
-position:relative;
 }
 
 video{
@@ -99,6 +101,10 @@ font-size:13px;
 
 video{
 height:420px;
+}
+
+body{
+padding-top:420px;
 }
 
 .channel{
@@ -244,32 +250,6 @@ video.src=url;
 video.play();
 }
 }
-
-/* PC mouse drag slider */
-const sliders=document.querySelectorAll(".channels");
-
-sliders.forEach((slider)=>{
-let isDown=false;
-let startX;
-let scrollLeft;
-
-slider.addEventListener("mousedown",(e)=>{
-isDown=true;
-startX=e.pageX-slider.offsetLeft;
-scrollLeft=slider.scrollLeft;
-});
-
-slider.addEventListener("mouseleave",()=>{isDown=false;});
-slider.addEventListener("mouseup",()=>{isDown=false;});
-
-slider.addEventListener("mousemove",(e)=>{
-if(!isDown) return;
-e.preventDefault();
-const x=e.pageX-slider.offsetLeft;
-const walk=(x-startX)*2;
-slider.scrollLeft=scrollLeft-walk;
-});
-});
 
 </script>
 
