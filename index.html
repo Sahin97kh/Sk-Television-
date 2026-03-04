@@ -45,13 +45,31 @@ background:black;
 color:white;
 }
 
+/* RUNNING TEXT */
+
+#runningText{
+position:absolute;
+bottom:0;
+left:0;
+width:100%;
+background:rgba(0,0,0,0.85);
+color:#00ffd0;
+font-size:13px;
+padding:5px 0;
+}
+
+.phone{
+color:red;
+font-weight:bold;
+}
+
 #prevBtn,#nextBtn{
 display:none;
 }
 
 #channelTitle{
 position:absolute;
-bottom:10px;
+bottom:28px;
 left:12px;
 background:rgba(0,0,0,0.6);
 padding:6px 12px;
@@ -103,14 +121,10 @@ margin-top:8px;
 font-size:13px;
 }
 
-/* mobile highlight */
-
 .channel.active img{
 border:1.5px solid #7dffc0;
 box-shadow:0 0 6px rgba(125,255,192,0.6);
 }
-
-/* PC */
 
 @media (min-width:900px){
 
@@ -164,9 +178,19 @@ box-shadow:0 0 10px rgba(125,255,192,0.8);
 
 <div id="videoPlaceholder">SK Television</div>
 
+<div id="runningText">
+<marquee>
+আমাদের টিভি চ্যানেলের কাজ চলছে • নতুন নতুন টিভি যুক্ত করা হচ্ছে • তাই সাময়িক সমস্যার জন্য আমরা আন্তরিকভাবে দুঃখিত • যেকোনো সমস্যার জন্য ফোন করুন 
+<span class="phone">01835303883</span> /
+<span class="phone">01615303883</span>
+</marquee>
+</div>
+
 <div id="channelTitle"></div>
 
 </div>
+
+<!-- BANGLA -->
 
 <div class="section">
 <div class="section-title">
@@ -176,6 +200,8 @@ box-shadow:0 0 10px rgba(125,255,192,0.8);
 <div class="channels" id="bdChannels"></div>
 </div>
 
+<!-- INDIAN -->
+
 <div class="section">
 <div class="section-title">
 <span>Indian Channels</span>
@@ -183,6 +209,8 @@ box-shadow:0 0 10px rgba(125,255,192,0.8);
 </div>
 <div class="channels" id="indianChannels"></div>
 </div>
+
+<!-- ENGLISH -->
 
 <div class="section">
 <div class="section-title">
@@ -200,18 +228,22 @@ let currentList=[];
 let currentIndex=0;
 let hls=null;
 
+/* BANGLA CHANNELS */
+
 const banglaChannels=[
 {name:"Ekhon TV",logo:"logos/images.jpeg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1713/output/1713-audio_113432_eng=113200-video=2202800.m3u8"},
 {name:"ATN Bangla",logo:"logos/images.png",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1722/output/1722-audio_113522_eng=113200-video=2202800.m3u8"},
 {name:"71 TV",logo:"logos/IMG_20260303_225626.jpg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1705/output/1705-audio_113352_eng=113200-video=2202800.m3u8"},
 {name:"BTV",logo:"logos/images (2).jpeg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1709/output/1709-audio_113392_eng=113200-video=2202800.m3u8"},
 {name:"Jamuna Tv",logo:"logos/channels4_profile (1).jpg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1701/output/1701-audio_113312_eng=113200-video=1181200.m3u8"},
-{name:"B Vison",logo:"logos/images (3).jpeg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1715/output/1715-audio_113452_eng=113200-video=2202800.m3u8"},
+{name:"Bangla Vision",logo:"logos/images (3).jpeg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1715/output/1715-audio_113452_eng=113200-video=2202800.m3u8"},
 {name:"Somoy Tv",logo:"logos/images (1).png",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1702/output/1702-audio_113322_eng=113200-video=2202800.m3u8"},
 {name:"Gazi Tv",logo:"logos/images (10).jpeg",link:"http://tvn1.chowdhury-shaheb.com/gazitv/index.m3u8"},
 {name:"NTV",logo:"logos/images (2).png",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1716/output/index.m3u8"},
 {name:"SRK TV",logo:"logos/images (6).jpeg",link:"https://srknowapp.ncare.live/srktvhlswodrm/srktv.stream/tracks-v1a1/mono.m3u8"}
 ];
+
+/* INDIAN */
 
 const indianChannels=[
 {name:"PTC Music",logo:"logos/images (7).jpeg",link:"https://d2lk5u59tns74c.cloudfront.net/out/v1/f913cf893c594f73b114216e74a2efbc/index_4.m3u8"},
@@ -226,6 +258,8 @@ const indianChannels=[
 {name:"Indian 10",logo:"logos/s10.png",link:"LINK20"}
 ];
 
+/* ENGLISH */
+
 const englishChannels=[
 {name:"CNN",logo:"logos/cnn.png",link:"LINK21"},
 {name:"BBC World",logo:"logos/bbc.png",link:"LINK22"},
@@ -239,62 +273,10 @@ const englishChannels=[
 {name:"NBC News",logo:"logos/nbc.png",link:"LINK30"}
 ];
 
-function createChannels(list,id){
-
-const container=document.getElementById(id);
-container.innerHTML="";
-
-list.forEach((c,index)=>{
-
-const div=document.createElement("div");
-div.className="channel";
-
-div.onclick=function(){
-
-currentList=list;
-currentIndex=index;
-
-updateActiveChannel();
-
-const title=document.getElementById("channelTitle");
-title.innerText=c.name;
-title.style.opacity="1";
-
-setTimeout(()=>{title.style.opacity="0";},2000);
-
-playChannel(c.link);
-
-};
-
-div.innerHTML=`<img src="${c.logo}">
-<div class="channel-name">${c.name}</div>`;
-
-container.appendChild(div);
-
-});
-
-}
-
-function updateActiveChannel(){
-
-document.querySelectorAll(".channel").forEach(c=>{
-c.classList.remove("active");
-});
-
-const lists=document.querySelectorAll(".channels");
-
-lists.forEach(list=>{
-const items=list.querySelectorAll(".channel");
-if(items[currentIndex]){
-items[currentIndex].classList.add("active");
-}
-});
-
-}
-
 function playChannel(url){
 
 document.getElementById("videoPlaceholder").style.display="none";
+document.getElementById("runningText").style.display="none";
 
 const video=document.getElementById("videoPlayer");
 
@@ -313,30 +295,6 @@ video.play();
 }
 
 }
-
-document.getElementById("nextBtn").onclick=function(){
-
-if(currentIndex<currentList.length-1){
-currentIndex++;
-updateActiveChannel();
-playChannel(currentList[currentIndex].link);
-}
-
-};
-
-document.getElementById("prevBtn").onclick=function(){
-
-if(currentIndex>0){
-currentIndex--;
-updateActiveChannel();
-playChannel(currentList[currentIndex].link);
-}
-
-};
-
-createChannels(banglaChannels,"bdChannels");
-createChannels(indianChannels,"indianChannels");
-createChannels(englishChannels,"englishChannels");
 
 </script>
 
