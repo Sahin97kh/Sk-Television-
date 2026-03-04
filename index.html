@@ -45,7 +45,7 @@ background:black;
 color:white;
 }
 
-/* RUNNING TEXT */
+/* running notice */
 
 #runningText{
 position:absolute;
@@ -65,18 +65,6 @@ font-weight:bold;
 
 #prevBtn,#nextBtn{
 display:none;
-}
-
-#channelTitle{
-position:absolute;
-bottom:28px;
-left:12px;
-background:rgba(0,0,0,0.6);
-padding:6px 12px;
-border-radius:6px;
-font-size:14px;
-opacity:0;
-transition:opacity 0.6s;
 }
 
 .section{
@@ -186,11 +174,7 @@ box-shadow:0 0 10px rgba(125,255,192,0.8);
 </marquee>
 </div>
 
-<div id="channelTitle"></div>
-
 </div>
-
-<!-- BANGLA -->
 
 <div class="section">
 <div class="section-title">
@@ -200,8 +184,6 @@ box-shadow:0 0 10px rgba(125,255,192,0.8);
 <div class="channels" id="bdChannels"></div>
 </div>
 
-<!-- INDIAN -->
-
 <div class="section">
 <div class="section-title">
 <span>Indian Channels</span>
@@ -209,8 +191,6 @@ box-shadow:0 0 10px rgba(125,255,192,0.8);
 </div>
 <div class="channels" id="indianChannels"></div>
 </div>
-
-<!-- ENGLISH -->
 
 <div class="section">
 <div class="section-title">
@@ -224,54 +204,35 @@ box-shadow:0 0 10px rgba(125,255,192,0.8);
 
 <script>
 
-let currentList=[];
-let currentIndex=0;
 let hls=null;
 
-/* BANGLA CHANNELS */
+/* channel create */
 
-const banglaChannels=[
-{name:"Ekhon TV",logo:"logos/images.jpeg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1713/output/1713-audio_113432_eng=113200-video=2202800.m3u8"},
-{name:"ATN Bangla",logo:"logos/images.png",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1722/output/1722-audio_113522_eng=113200-video=2202800.m3u8"},
-{name:"71 TV",logo:"logos/IMG_20260303_225626.jpg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1705/output/1705-audio_113352_eng=113200-video=2202800.m3u8"},
-{name:"BTV",logo:"logos/images (2).jpeg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1709/output/1709-audio_113392_eng=113200-video=2202800.m3u8"},
-{name:"Jamuna Tv",logo:"logos/channels4_profile (1).jpg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1701/output/1701-audio_113312_eng=113200-video=1181200.m3u8"},
-{name:"Bangla Vision",logo:"logos/images (3).jpeg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1715/output/1715-audio_113452_eng=113200-video=2202800.m3u8"},
-{name:"Somoy Tv",logo:"logos/images (1).png",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1702/output/1702-audio_113322_eng=113200-video=2202800.m3u8"},
-{name:"Gazi Tv",logo:"logos/images (10).jpeg",link:"http://tvn1.chowdhury-shaheb.com/gazitv/index.m3u8"},
-{name:"NTV",logo:"logos/images (2).png",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1716/output/index.m3u8"},
-{name:"SRK TV",logo:"logos/images (6).jpeg",link:"https://srknowapp.ncare.live/srktvhlswodrm/srktv.stream/tracks-v1a1/mono.m3u8"}
-];
+function createChannels(list,id){
 
-/* INDIAN */
+const container=document.getElementById(id);
+container.innerHTML="";
 
-const indianChannels=[
-{name:"PTC Music",logo:"logos/images (7).jpeg",link:"https://d2lk5u59tns74c.cloudfront.net/out/v1/f913cf893c594f73b114216e74a2efbc/index_4.m3u8"},
-{name:"Goldmines",logo:"logos/channels4_profile (3).jpg",link:"https://cdn-2.pishow.tv/live/1461/1461_1.m3u8"},
-{name:"Star Gold",logo:"logos/images (8).jpeg",link:"http://103.99.249.139/stargold/tracks-v1a1/mono.m3u8"},
-{name:"Moon TV",logo:"logos/images (9).jpeg",link:"https://player.mslivestream.net/mslive/e10bb900976df9177b9a080314f26f86.sdp/chunks.m3u8"},
-{name:"Indian 5",logo:"logos/s5.png",link:"LINK15"},
-{name:"Indian 6",logo:"logos/s6.png",link:"LINK16"},
-{name:"Indian 7",logo:"logos/s7.png",link:"LINK17"},
-{name:"Indian 8",logo:"logos/s8.png",link:"LINK18"},
-{name:"Indian 9",logo:"logos/s9.png",link:"LINK19"},
-{name:"Indian 10",logo:"logos/s10.png",link:"LINK20"}
-];
+list.forEach((c)=>{
 
-/* ENGLISH */
+const div=document.createElement("div");
+div.className="channel";
 
-const englishChannels=[
-{name:"CNN",logo:"logos/cnn.png",link:"LINK21"},
-{name:"BBC World",logo:"logos/bbc.png",link:"LINK22"},
-{name:"Sky News",logo:"logos/sky.png",link:"LINK23"},
-{name:"Fox News",logo:"logos/fox.png",link:"LINK24"},
-{name:"CNBC",logo:"logos/cnbc.png",link:"LINK25"},
-{name:"Bloomberg",logo:"logos/bloomberg.png",link:"LINK26"},
-{name:"France 24",logo:"logos/france24.png",link:"LINK27"},
-{name:"DW News",logo:"logos/dw.png",link:"LINK28"},
-{name:"ABC News",logo:"logos/abc.png",link:"LINK29"},
-{name:"NBC News",logo:"logos/nbc.png",link:"LINK30"}
-];
+div.onclick=function(){
+playChannel(c.link);
+};
+
+div.innerHTML=
+`<img src="${c.logo}">
+<div class="channel-name">${c.name}</div>`;
+
+container.appendChild(div);
+
+});
+
+}
+
+/* player */
 
 function playChannel(url){
 
@@ -295,6 +256,55 @@ video.play();
 }
 
 }
+
+/* bangla */
+
+const banglaChannels=[
+{name:"Ekhon TV",logo:"logos/images.jpeg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1713/output/1713-audio_113432_eng=113200-video=2202800.m3u8"},
+{name:"ATN Bangla",logo:"logos/images.png",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1722/output/1722-audio_113522_eng=113200-video=2202800.m3u8"},
+{name:"71 TV",logo:"logos/IMG_20260303_225626.jpg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1705/output/1705-audio_113352_eng=113200-video=2202800.m3u8"},
+{name:"BTV",logo:"logos/images (2).jpeg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1709/output/1709-audio_113392_eng=113200-video=2202800.m3u8"},
+{name:"Jamuna Tv",logo:"logos/channels4_profile (1).jpg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1701/output/1701-audio_113312_eng=113200-video=1181200.m3u8"},
+{name:"Bangla Vision",logo:"logos/images (3).jpeg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1715/output/1715-audio_113452_eng=113200-video=2202800.m3u8"},
+{name:"Somoy Tv",logo:"logos/images (1).png",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1702/output/1702-audio_113322_eng=113200-video=2202800.m3u8"},
+{name:"Gazi Tv",logo:"logos/images (10).jpeg",link:"http://tvn1.chowdhury-shaheb.com/gazitv/index.m3u8"},
+{name:"NTV",logo:"logos/images (2).png",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1716/output/index.m3u8"},
+{name:"SRK TV",logo:"logos/images (6).jpeg",link:"https://srknowapp.ncare.live/srktvhlswodrm/srktv.stream/tracks-v1a1/mono.m3u8"}
+];
+
+/* indian */
+
+const indianChannels=[
+{name:"PTC Music",logo:"logos/images (7).jpeg",link:"https://d2lk5u59tns74c.cloudfront.net/out/v1/f913cf893c594f73b114216e74a2efbc/index_4.m3u8"},
+{name:"Goldmines",logo:"logos/channels4_profile (3).jpg",link:"https://cdn-2.pishow.tv/live/1461/1461_1.m3u8"},
+{name:"Star Gold",logo:"logos/images (8).jpeg",link:"http://103.99.249.139/stargold/tracks-v1a1/mono.m3u8"},
+{name:"Moon TV",logo:"logos/images (9).jpeg",link:"https://player.mslivestream.net/mslive/e10bb900976df9177b9a080314f26f86.sdp/chunks.m3u8"},
+{name:"Indian 5",logo:"logos/s5.png",link:"#"},
+{name:"Indian 6",logo:"logos/s6.png",link:"#"},
+{name:"Indian 7",logo:"logos/s7.png",link:"#"},
+{name:"Indian 8",logo:"logos/s8.png",link:"#"},
+{name:"Indian 9",logo:"logos/s9.png",link:"#"},
+{name:"Indian 10",logo:"logos/s10.png",link:"#"}
+];
+
+/* english */
+
+const englishChannels=[
+{name:"CNN",logo:"logos/cnn.png",link:"#"},
+{name:"BBC World",logo:"logos/bbc.png",link:"#"},
+{name:"Sky News",logo:"logos/sky.png",link:"#"},
+{name:"Fox News",logo:"logos/fox.png",link:"#"},
+{name:"CNBC",logo:"logos/cnbc.png",link:"#"},
+{name:"Bloomberg",logo:"logos/bloomberg.png",link:"#"},
+{name:"France 24",logo:"logos/france24.png",link:"#"},
+{name:"DW News",logo:"logos/dw.png",link:"#"},
+{name:"ABC News",logo:"logos/abc.png",link:"#"},
+{name:"NBC News",logo:"logos/nbc.png",link:"#"}
+];
+
+createChannels(banglaChannels,"bdChannels");
+createChannels(indianChannels,"indianChannels");
+createChannels(englishChannels,"englishChannels");
 
 </script>
 
