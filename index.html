@@ -53,7 +53,6 @@ display:none;
 flex:0 0 22%;
 text-align:center;
 cursor:pointer;
-transition:0.3s;
 }
 
 .channel img{
@@ -62,17 +61,6 @@ aspect-ratio:1/1;
 border-radius:50%;
 object-fit:cover;
 background:white;
-transition:0.3s;
-}
-
-.channel:hover img{
-transform:scale(1.08);
-box-shadow:0 0 12px #ff00ff;
-}
-
-.channel.active img{
-box-shadow:0 0 15px #00ffff,0 0 25px #00ffff;
-transform:scale(1.08);
 }
 
 .channel-name{
@@ -159,22 +147,10 @@ let hls=null;
 function createChannels(list,id){
 const container=document.getElementById(id);
 container.innerHTML="";
-list.forEach((c,i)=>{
+list.forEach((c)=>{
 const div=document.createElement("div");
 div.className="channel";
-
-div.onclick=function(){
-
-document.querySelectorAll(".channel").forEach(x=>{
-x.classList.remove("active");
-});
-
-div.classList.add("active");
-
-playChannel(c.link);
-
-};
-
+div.onclick=function(){playChannel(c.link)};
 div.innerHTML=`<img src="${c.logo}"><div class="channel-name">${c.name}</div>`;
 container.appendChild(div);
 });
