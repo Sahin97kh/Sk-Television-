@@ -35,36 +35,8 @@ background:rgba(0,0,0,0.6);
 padding:6px 12px;
 border-radius:6px;
 font-size:14px;
-}
-
-#liveBadge{
-position:absolute;
-top:10px;
-right:12px;
-background:red;
-padding:4px 8px;
-border-radius:4px;
-font-size:12px;
-font-weight:bold;
-}
-
-#loader{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-width:40px;
-height:40px;
-border:4px solid rgba(255,255,255,0.3);
-border-top:4px solid white;
-border-radius:50%;
-animation:spin 1s linear infinite;
-display:none;
-}
-
-@keyframes spin{
-0%{transform:translate(-50%,-50%) rotate(0deg);}
-100%{transform:translate(-50%,-50%) rotate(360deg);}
+opacity:0;
+transition:opacity 0.6s;
 }
 
 .section{
@@ -115,8 +87,6 @@ font-size:13px;
 <div class="player">
 <video id="videoPlayer" controls playsinline></video>
 <div id="channelTitle"></div>
-<div id="liveBadge">LIVE</div>
-<div id="loader"></div>
 </div>
 
 <div class="section">
@@ -194,10 +164,22 @@ container.innerHTML="";
 list.forEach((c)=>{
 const div=document.createElement("div");
 div.className="channel";
+
 div.onclick=function(){
-document.getElementById("channelTitle").innerText=c.name;
+
+const title=document.getElementById("channelTitle");
+
+title.innerText=c.name;
+title.style.opacity="1";
+
+setTimeout(function(){
+title.style.opacity="0";
+},2000);
+
 playChannel(c.link);
+
 };
+
 div.innerHTML=`<img src="${c.logo}"><div class="channel-name">${c.name}</div>`;
 container.appendChild(div);
 });
@@ -209,9 +191,6 @@ createChannels(newsChannels,"newsChannels");
 
 function playChannel(url){
 const video=document.getElementById("videoPlayer");
-const loader=document.getElementById("loader");
-
-loader.style.display="block";
 
 if(hls){hls.destroy();}
 
@@ -219,13 +198,9 @@ if(Hls.isSupported()){
 hls=new Hls();
 hls.loadSource(url);
 hls.attachMedia(video);
-hls.on(Hls.Events.MANIFEST_PARSED,function(){
-loader.style.display="none";
-video.play();
-});
+hls.on(Hls.Events.MANIFEST_PARSED,function(){video.play();});
 }else{
 video.src=url;
-loader.style.display="none";
 video.play();
 }
 }
