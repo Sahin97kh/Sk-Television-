@@ -27,7 +27,6 @@ height:220px;
 background:black;
 }
 
-/* fullscreen হলে স্ক্রিন ফিট */
 video:fullscreen{
 width:100%;
 height:100%;
@@ -35,12 +34,6 @@ object-fit:cover;
 }
 
 video:-webkit-full-screen{
-width:100%;
-height:100%;
-object-fit:cover;
-}
-
-video:-moz-full-screen{
 width:100%;
 height:100%;
 object-fit:cover;
@@ -75,6 +68,7 @@ display:flex;
 overflow-x:auto;
 padding:0 15px;
 gap:15px;
+cursor:grab;
 }
 
 .channels::-webkit-scrollbar{
@@ -100,15 +94,11 @@ margin-top:8px;
 font-size:13px;
 }
 
-/* PC / Laptop view */
+/* PC responsive */
 @media (min-width:900px){
 
 video{
 height:420px;
-}
-
-.channels{
-gap:25px;
 }
 
 .channel{
@@ -118,14 +108,6 @@ flex:0 0 120px;
 .channel img{
 width:120px;
 height:120px;
-}
-
-.channel-name{
-font-size:14px;
-}
-
-.section{
-padding:20px 0;
 }
 
 .section-title{
@@ -262,6 +244,32 @@ video.src=url;
 video.play();
 }
 }
+
+/* PC mouse drag slider */
+const sliders=document.querySelectorAll(".channels");
+
+sliders.forEach((slider)=>{
+let isDown=false;
+let startX;
+let scrollLeft;
+
+slider.addEventListener("mousedown",(e)=>{
+isDown=true;
+startX=e.pageX-slider.offsetLeft;
+scrollLeft=slider.scrollLeft;
+});
+
+slider.addEventListener("mouseleave",()=>{isDown=false;});
+slider.addEventListener("mouseup",()=>{isDown=false;});
+
+slider.addEventListener("mousemove",(e)=>{
+if(!isDown) return;
+e.preventDefault();
+const x=e.pageX-slider.offsetLeft;
+const walk=(x-startX)*2;
+slider.scrollLeft=scrollLeft-walk;
+});
+});
 
 </script>
 
