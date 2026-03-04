@@ -9,7 +9,7 @@
 
 body{
 margin:0;
-font-family:Arial, sans-serif;
+font-family:Arial,sans-serif;
 background:#0b0014;
 color:white;
 padding-top:220px;
@@ -30,8 +30,6 @@ height:220px;
 background:black;
 }
 
-/* placeholder */
-
 #videoPlaceholder{
 position:absolute;
 top:0;
@@ -47,13 +45,9 @@ background:black;
 color:white;
 }
 
-/* prev next hidden mobile */
-
 #prevBtn,#nextBtn{
 display:none;
 }
-
-/* fullscreen */
 
 video:fullscreen{
 width:100%;
@@ -98,7 +92,6 @@ display:flex;
 overflow-x:auto;
 padding:0 15px;
 gap:15px;
-cursor:grab;
 }
 
 .channels::-webkit-scrollbar{
@@ -124,7 +117,7 @@ margin-top:8px;
 font-size:13px;
 }
 
-/* PC view */
+/* PC VERSION */
 
 @media (min-width:900px){
 
@@ -153,8 +146,6 @@ height:120px;
 font-size:22px;
 }
 
-/* prev next PC only */
-
 #prevBtn,#nextBtn{
 display:block;
 position:absolute;
@@ -168,8 +159,13 @@ border-radius:50%;
 cursor:pointer;
 }
 
-#prevBtn{ left:15px; }
-#nextBtn{ right:15px; }
+#prevBtn{left:15px;}
+#nextBtn{right:15px;}
+
+.channel.active img{
+border:1px solid #6affb2;
+box-shadow:0 0 4px rgba(106,255,178,0.5);
+}
 
 }
 
@@ -277,6 +273,8 @@ div.onclick=function(){
 currentList=list;
 currentIndex=index;
 
+updateActiveChannel();
+
 const title=document.getElementById("channelTitle");
 title.innerText=c.name;
 title.style.opacity="1";
@@ -296,9 +294,39 @@ container.appendChild(div);
 
 }
 
-createChannels(banglaChannels,"bdChannels");
-createChannels(indianChannels,"indianChannels");
-createChannels(newsChannels,"newsChannels");
+function scrollActiveChannel(){
+
+const active=document.querySelector(".channel.active");
+
+if(active){
+active.scrollIntoView({
+behavior:"smooth",
+inline:"center",
+block:"nearest"
+});
+}
+
+}
+
+function updateActiveChannel(){
+
+document.querySelectorAll(".channel").forEach(c=>{
+c.classList.remove("active");
+});
+
+const lists=document.querySelectorAll(".channels");
+
+lists.forEach(list=>{
+const items=list.querySelectorAll(".channel");
+
+if(items[currentIndex]){
+items[currentIndex].classList.add("active");
+}
+});
+
+scrollActiveChannel();
+
+}
 
 function playChannel(url){
 
@@ -306,22 +334,21 @@ document.getElementById("videoPlaceholder").style.display="none";
 
 const video=document.getElementById("videoPlayer");
 
-if(hls){ hls.destroy(); }
+if(hls){hls.destroy();}
 
 if(Hls.isSupported()){
 
 hls=new Hls();
 hls.loadSource(url);
 hls.attachMedia(video);
+
 hls.on(Hls.Events.MANIFEST_PARSED,function(){
 video.play();
 });
 
 }else{
-
 video.src=url;
 video.play();
-
 }
 
 }
@@ -330,6 +357,7 @@ document.getElementById("nextBtn").onclick=function(){
 
 if(currentIndex<currentList.length-1){
 currentIndex++;
+updateActiveChannel();
 playChannel(currentList[currentIndex].link);
 }
 
@@ -339,10 +367,15 @@ document.getElementById("prevBtn").onclick=function(){
 
 if(currentIndex>0){
 currentIndex--;
+updateActiveChannel();
 playChannel(currentList[currentIndex].link);
 }
 
 };
+
+createChannels(banglaChannels,"bdChannels");
+createChannels(indianChannels,"indianChannels");
+createChannels(newsChannels,"newsChannels");
 
 </script>
 
