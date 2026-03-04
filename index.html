@@ -6,6 +6,7 @@
 <title>SK Television</title>
 
 <style>
+
 body{
 margin:0;
 font-family:Arial, sans-serif;
@@ -29,7 +30,7 @@ height:220px;
 background:black;
 }
 
-/* placeholder screen */
+/* placeholder */
 
 #videoPlaceholder{
 position:absolute;
@@ -46,7 +47,13 @@ background:black;
 color:white;
 }
 
-/* fullscreen fix */
+/* prev next hidden mobile */
+
+#prevBtn,#nextBtn{
+display:none;
+}
+
+/* fullscreen */
 
 video:fullscreen{
 width:100%;
@@ -146,19 +153,39 @@ height:120px;
 font-size:22px;
 }
 
+/* prev next PC only */
+
+#prevBtn,#nextBtn{
+display:block;
+position:absolute;
+top:50%;
+transform:translateY(-50%);
+font-size:32px;
+color:white;
+background:rgba(0,0,0,0.5);
+padding:12px 16px;
+border-radius:50%;
+cursor:pointer;
+}
+
+#prevBtn{ left:15px; }
+#nextBtn{ right:15px; }
+
 }
 
 </style>
 </head>
+
 <body>
 
 <div class="player">
 
 <video id="videoPlayer" controls playsinline></video>
 
-<div id="videoPlaceholder">
-SK Television
-</div>
+<div id="prevBtn">❮</div>
+<div id="nextBtn">❯</div>
+
+<div id="videoPlaceholder">SK Television</div>
 
 <div id="channelTitle"></div>
 
@@ -191,6 +218,10 @@ SK Television
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
 <script>
+
+let currentList=[];
+let currentIndex=0;
+let hls=null;
 
 const banglaChannels=[
 {name:"Ekhon TV",logo:"logos/images.jpeg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1713/output/1713-audio_113432_eng=113200-video=2202800.m3u8"},
@@ -231,28 +262,26 @@ const newsChannels=[
 {name:"News 10",logo:"logos/n10.png",link:"LINK30"}
 ];
 
-let hls=null;
-
 function createChannels(list,id){
 
 const container=document.getElementById(id);
 container.innerHTML="";
 
-list.forEach((c)=>{
+list.forEach((c,index)=>{
 
 const div=document.createElement("div");
 div.className="channel";
 
 div.onclick=function(){
 
-const title=document.getElementById("channelTitle");
+currentList=list;
+currentIndex=index;
 
+const title=document.getElementById("channelTitle");
 title.innerText=c.name;
 title.style.opacity="1";
 
-setTimeout(function(){
-title.style.opacity="0";
-},2000);
+setTimeout(()=>{title.style.opacity="0";},2000);
 
 playChannel(c.link);
 
@@ -273,37 +302,47 @@ createChannels(newsChannels,"newsChannels");
 
 function playChannel(url){
 
-const video=document.getElementById("videoPlayer");
-
 document.getElementById("videoPlaceholder").style.display="none";
 
-if(hls){
-hls.destroy();
-}
+const video=document.getElementById("videoPlayer");
+
+if(hls){ hls.destroy(); }
 
 if(Hls.isSupported()){
 
 hls=new Hls();
-
 hls.loadSource(url);
-
 hls.attachMedia(video);
-
 hls.on(Hls.Events.MANIFEST_PARSED,function(){
-
 video.play();
-
 });
 
 }else{
 
 video.src=url;
-
 video.play();
 
 }
 
 }
+
+document.getElementById("nextBtn").onclick=function(){
+
+if(currentIndex<currentList.length-1){
+currentIndex++;
+playChannel(currentList[currentIndex].link);
+}
+
+};
+
+document.getElementById("prevBtn").onclick=function(){
+
+if(currentIndex>0){
+currentIndex--;
+playChannel(currentList[currentIndex].link);
+}
+
+};
 
 </script>
 
