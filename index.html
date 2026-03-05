@@ -15,15 +15,16 @@ color:white;
 padding-top:220px;
 }
 
-/* slider */
+/* TOFFEE STYLE SLIDER */
 
-#slider{
+.slider{
 position:fixed;
 top:0;
 left:0;
 width:100%;
 height:220px;
 overflow:hidden;
+background:black;
 z-index:900;
 }
 
@@ -33,14 +34,50 @@ width:100%;
 height:100%;
 object-fit:cover;
 opacity:0;
-transition:opacity 1s;
+transition:opacity .7s;
 }
 
 .slide.active{
 opacity:1;
 }
 
-/* player */
+.arrow{
+position:absolute;
+top:50%;
+transform:translateY(-50%);
+font-size:30px;
+color:white;
+background:rgba(0,0,0,0.4);
+padding:8px 14px;
+border-radius:50%;
+cursor:pointer;
+}
+
+.arrow.left{left:10px;}
+.arrow.right{right:10px;}
+
+.dots{
+position:absolute;
+bottom:10px;
+left:50%;
+transform:translateX(-50%);
+}
+
+.dot{
+height:8px;
+width:8px;
+margin:4px;
+background:#aaa;
+border-radius:50%;
+display:inline-block;
+cursor:pointer;
+}
+
+.dot.active{
+background:#ff3c8f;
+}
+
+/* PLAYER */
 
 .player{
 position:fixed;
@@ -141,12 +178,23 @@ box-shadow:0 0 6px rgba(125,255,192,0.6);
 
 <body>
 
-<!-- slider -->
+<!-- TOFFEE STYLE SLIDER -->
 
-<div id="slider">
+<div class="slider" id="slider">
+
 <img src="https://sahin97kh.github.io/Sk-Television-/slider/1.jpg.png" class="slide active">
 <img src="https://sahin97kh.github.io/Sk-Television-/slider/1772723116959.png" class="slide">
 <img src="https://sahin97kh.github.io/Sk-Television-/slider/IMG_20260305_210449.jpg" class="slide">
+
+<div class="arrow left" onclick="prevSlide()">❮</div>
+<div class="arrow right" onclick="nextSlide()">❯</div>
+
+<div class="dots">
+<span class="dot active" onclick="goSlide(0)"></span>
+<span class="dot" onclick="goSlide(1)"></span>
+<span class="dot" onclick="goSlide(2)"></span>
+</div>
+
 </div>
 
 <div class="player">
@@ -157,7 +205,7 @@ box-shadow:0 0 6px rgba(125,255,192,0.6);
 
 <div id="runningText">
 <marquee>
-আমাদের টিভি চ্যানেল এর কাজ চলছে, নতুন নতুন টিভি যুক্ত করা হচ্ছে তাই সাময়িক সমস্যার জন্য আমরা আন্তরিক ভাবে দুঃখিত। যেকোনো সমস্যার জন্য ফোন করুনঃ 
+আমাদের টিভি চ্যানেল এর কাজ চলছে, নতুন নতুন টিভি যুক্ত করা হচ্ছে তাই সাময়িক সমস্যার জন্য আমরা আন্তরিক ভাবে দুঃখিত। 
 <span class="phone">01835303883</span> অথবা 
 <span class="phone">01615303883</span>
 </marquee>
@@ -201,32 +249,43 @@ box-shadow:0 0 6px rgba(125,255,192,0.6);
 
 <script>
 
-/* slider */
+/* TOFFEE SLIDER */
 
 let slideIndex=0;
+
 const slides=document.querySelectorAll(".slide");
+const dots=document.querySelectorAll(".dot");
 
-function autoSlider(){
+function showSlide(n){
 
-slides.forEach(s=>{
-s.classList.remove("active");
-});
+slides.forEach(s=>s.classList.remove("active"));
+dots.forEach(d=>d.classList.remove("active"));
 
+slides[n].classList.add("active");
+dots[n].classList.add("active");
+
+}
+
+function nextSlide(){
 slideIndex++;
-
-if(slideIndex>slides.length){
-slideIndex=1;
+if(slideIndex>=slides.length){slideIndex=0;}
+showSlide(slideIndex);
 }
 
-slides[slideIndex-1].classList.add("active");
-
-setTimeout(autoSlider,3000);
-
+function prevSlide(){
+slideIndex--;
+if(slideIndex<0){slideIndex=slides.length-1;}
+showSlide(slideIndex);
 }
 
-autoSlider();
+function goSlide(n){
+slideIndex=n;
+showSlide(slideIndex);
+}
 
-/* player */
+setInterval(nextSlide,4000);
+
+/* PLAYER */
 
 let hls=null;
 
@@ -287,7 +346,7 @@ container.appendChild(div);
 
 }
 
-/* bangla */
+/* BANGLA */
 
 const banglaChannels=[
 {name:"Ekhon TV",logo:"logos/images.jpeg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1713/output/1713-audio_113432_eng=113200-video=2202800.m3u8"},
@@ -302,7 +361,7 @@ const banglaChannels=[
 {name:"SRK TV",logo:"logos/images (6).jpeg",link:"https://srknowapp.ncare.live/srktvhlswodrm/srktv.stream/tracks-v1a1/mono.m3u8"}
 ];
 
-/* indian */
+/* INDIAN */
 
 const indianChannels=[
 {name:"PTC Music",logo:"logos/images (7).jpeg",link:"https://d2lk5u59tns74c.cloudfront.net/out/v1/f913cf893c594f73b114216e74a2efbc/index_4.m3u8"},
@@ -317,7 +376,7 @@ const indianChannels=[
 {name:"Hindi Movie",logo:"logos/images (16).jpeg",link:"https://vods2.aynaott.com/hindimovies/tracks-v1a1/mono.ts.m3u8"}
 ];
 
-/* english */
+/* ENGLISH */
 
 const englishChannels=[
 {name:"Al Jazeera",logo:"logos/channels4_profile (4).jpg",link:"https://live-hls-apps-aje-fa.getaj.net/AJE/03.m3u8"},
@@ -332,7 +391,7 @@ const englishChannels=[
 {name:"SS1 TV",logo:"logos/cropped-SS1-ROUND-ICON-1.png",link:"https://linear-599.frequency.stream/dist/stirr/599/hls/master/playlist_1280x720.m3u8"}
 ];
 
-/* news */
+/* NEWS */
 
 const newsChannels=[
 {name:"BBC News",link:"https://vs-cmaf-pushb-ww-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_news24/pc_hd_abr_v2.mpd"},
