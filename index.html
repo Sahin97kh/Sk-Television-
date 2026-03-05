@@ -15,6 +15,8 @@ color:white;
 padding-top:220px;
 }
 
+/* PLAYER */
+
 .player{
 position:fixed;
 top:0;
@@ -24,7 +26,7 @@ background:black;
 z-index:1000;
 }
 
-/* TOFFEE PLAYER SLIDER */
+/* SLIDER */
 
 #playerSlider{
 position:absolute;
@@ -33,28 +35,23 @@ left:0;
 width:100%;
 height:220px;
 overflow:hidden;
-background:black;
 z-index:5;
 }
 
-.pSlide{
-position:absolute;
-width:100%;
+.sliderTrack{
+display:flex;
+width:300%;
 height:100%;
-object-fit:cover;
-transform:translateX(100%);
 transition:transform .6s ease;
 }
 
-.pSlide.active{
-transform:translateX(0);
+.sliderTrack img{
+width:100%;
+height:100%;
+object-fit:cover;
 }
 
-.pSlide.prev{
-transform:translateX(-100%);
-}
-
-.pArrow{
+.arrow{
 position:absolute;
 top:50%;
 transform:translateY(-50%);
@@ -67,8 +64,8 @@ cursor:pointer;
 z-index:10;
 }
 
-.pArrow.left{left:10px;}
-.pArrow.right{right:10px;}
+.arrow.left{left:10px;}
+.arrow.right{right:10px;}
 
 video{
 width:100%;
@@ -89,7 +86,6 @@ font-size:28px;
 font-weight:bold;
 background:black;
 color:white;
-z-index:6;
 }
 
 #runningText{
@@ -101,13 +97,14 @@ background:rgba(0,0,0,0.85);
 color:#00ffd0;
 font-size:13px;
 padding:5px 0;
-z-index:6;
 }
 
 .phone{
 color:red;
 font-weight:bold;
 }
+
+/* CHANNEL */
 
 .section{
 padding:10px 0;
@@ -126,7 +123,6 @@ display:flex;
 overflow-x:auto;
 padding:0 15px;
 gap:15px;
-scroll-behavior:smooth;
 }
 
 .channels::-webkit-scrollbar{
@@ -164,17 +160,17 @@ box-shadow:0 0 6px rgba(125,255,192,0.6);
 
 <div class="player">
 
-<!-- TOFFEE STYLE SLIDER -->
-
 <div id="playerSlider">
+<div class="sliderTrack" id="sliderTrack">
 
-<img src="https://sahin97kh.github.io/Sk-Television-/slider/1.jpg.png" class="pSlide active">
-<img src="https://sahin97kh.github.io/Sk-Television-/slider/1772723116959.png" class="pSlide">
-<img src="https://sahin97kh.github.io/Sk-Television-/slider/IMG_20260305_210449.jpg" class="pSlide">
+<img src="https://sahin97kh.github.io/Sk-Television-/slider/1.jpg.png">
+<img src="https://sahin97kh.github.io/Sk-Television-/slider/1772723116959.png">
+<img src="https://sahin97kh.github.io/Sk-Television-/slider/IMG_20260305_210449.jpg">
 
-<div class="pArrow left" onclick="prevPSlide()">❮</div>
-<div class="pArrow right" onclick="nextPSlide()">❯</div>
+</div>
 
+<div class="arrow left" onclick="prevSlide()">❮</div>
+<div class="arrow right" onclick="nextSlide()">❯</div>
 </div>
 
 <video id="videoPlayer" controls playsinline></video>
@@ -183,8 +179,8 @@ box-shadow:0 0 6px rgba(125,255,192,0.6);
 
 <div id="runningText">
 <marquee>
-আমাদের টিভি চ্যানেল এর কাজ চলছে, নতুন নতুন টিভি যুক্ত করা হচ্ছে তাই সাময়িক সমস্যার জন্য আমরা আন্তরিক ভাবে দুঃখিত। যেকোনো সমস্যার জন্য ফোন করুনঃ 
-<span class="phone">01835303883</span> অথবা 
+আমাদের টিভি চ্যানেল এর কাজ চলছে, নতুন নতুন টিভি যুক্ত করা হচ্ছে তাই সাময়িক সমস্যার জন্য আমরা আন্তরিক ভাবে দুঃখিত।
+<span class="phone">01835303883</span>
 <span class="phone">01615303883</span>
 </marquee>
 </div>
@@ -227,42 +223,28 @@ box-shadow:0 0 6px rgba(125,255,192,0.6);
 
 <script>
 
-/* PLAYER SLIDER */
+/* SLIDER */
 
-let pIndex=0;
+let index=0;
+const track=document.getElementById("sliderTrack");
 
-const pSlides=document.querySelectorAll(".pSlide");
-
-function showPSlide(){
-
-pSlides.forEach(s=>{
-s.classList.remove("active");
-});
-
-pSlides[pIndex].classList.add("active");
-
+function nextSlide(){
+index++;
+if(index>2){index=0;}
+track.style.transform="translateX(-"+index*100+"%)";
 }
 
-function nextPSlide(){
-pIndex++;
-if(pIndex>=pSlides.length){pIndex=0;}
-showPSlide();
+function prevSlide(){
+index--;
+if(index<0){index=2;}
+track.style.transform="translateX(-"+index*100+"%)";
 }
 
-function prevPSlide(){
-pIndex--;
-if(pIndex<0){pIndex=pSlides.length-1;}
-showPSlide();
-}
-
-setInterval(nextPSlide,4000);
+setInterval(nextSlide,4000);
 
 /* PLAYER */
 
 let hls=null;
-let currentList=[];
-let currentIndex=0;
-
 const defaultLogo="logos/IMG_20260305_175603.png";
 
 function playChannel(url){
@@ -300,9 +282,6 @@ div.className="channel";
 
 div.onclick=function(){
 
-currentList=list;
-currentIndex=index;
-
 document.querySelectorAll(".channel").forEach(ch=>{
 ch.classList.remove("active");
 });
@@ -323,7 +302,7 @@ container.appendChild(div);
 
 }
 
-/* bangla */
+/* BANGLA */
 
 const banglaChannels=[
 {name:"Ekhon TV",logo:"logos/images.jpeg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1713/output/1713-audio_113432_eng=113200-video=2202800.m3u8"},
@@ -338,7 +317,7 @@ const banglaChannels=[
 {name:"SRK TV",logo:"logos/images (6).jpeg",link:"https://srknowapp.ncare.live/srktvhlswodrm/srktv.stream/tracks-v1a1/mono.m3u8"}
 ];
 
-/* indian */
+/* INDIAN */
 
 const indianChannels=[
 {name:"PTC Music",logo:"logos/images (7).jpeg",link:"https://d2lk5u59tns74c.cloudfront.net/out/v1/f913cf893c594f73b114216e74a2efbc/index_4.m3u8"},
@@ -353,7 +332,7 @@ const indianChannels=[
 {name:"Hindi Movie",logo:"logos/images (16).jpeg",link:"https://vods2.aynaott.com/hindimovies/tracks-v1a1/mono.ts.m3u8"}
 ];
 
-/* english */
+/* ENGLISH */
 
 const englishChannels=[
 {name:"Al Jazeera",logo:"logos/channels4_profile (4).jpg",link:"https://live-hls-apps-aje-fa.getaj.net/AJE/03.m3u8"},
@@ -368,7 +347,7 @@ const englishChannels=[
 {name:"SS1 TV",logo:"logos/cropped-SS1-ROUND-ICON-1.png",link:"https://linear-599.frequency.stream/dist/stirr/599/hls/master/playlist_1280x720.m3u8"}
 ];
 
-/* news */
+/* NEWS */
 
 const newsChannels=[
 {name:"BBC News",link:"https://vs-cmaf-pushb-ww-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_news24/pc_hd_abr_v2.mpd"},
@@ -383,6 +362,9 @@ const newsChannels=[
 {name:"Sky News",link:"https://skynewsau-live.akamaized.net/hls/live/2002689/skynewsau-extra1/master.m3u8"}
 ];
 
+createChannels(indianChannels,"indianChannels");
+createChannels(englishChannels,"englishChannels");
+createChannels(newsChannels,"newsChannels");
 createChannels(banglaChannels,"bdChannels");
 createChannels(indianChannels,"indianChannels");
 createChannels(englishChannels,"englishChannels");
