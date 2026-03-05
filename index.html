@@ -15,70 +15,6 @@ color:white;
 padding-top:220px;
 }
 
-/* TOFFEE STYLE SLIDER */
-
-.slider{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:220px;
-overflow:hidden;
-background:black;
-z-index:900;
-}
-
-.slide{
-position:absolute;
-width:100%;
-height:100%;
-object-fit:cover;
-opacity:0;
-transition:opacity .7s;
-}
-
-.slide.active{
-opacity:1;
-}
-
-.arrow{
-position:absolute;
-top:50%;
-transform:translateY(-50%);
-font-size:30px;
-color:white;
-background:rgba(0,0,0,0.4);
-padding:8px 14px;
-border-radius:50%;
-cursor:pointer;
-}
-
-.arrow.left{left:10px;}
-.arrow.right{right:10px;}
-
-.dots{
-position:absolute;
-bottom:10px;
-left:50%;
-transform:translateX(-50%);
-}
-
-.dot{
-height:8px;
-width:8px;
-margin:4px;
-background:#aaa;
-border-radius:50%;
-display:inline-block;
-cursor:pointer;
-}
-
-.dot.active{
-background:#ff3c8f;
-}
-
-/* PLAYER */
-
 .player{
 position:fixed;
 top:0;
@@ -87,6 +23,52 @@ width:100%;
 background:black;
 z-index:1000;
 }
+
+/* TOFFEE PLAYER SLIDER */
+
+#playerSlider{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:220px;
+overflow:hidden;
+background:black;
+z-index:5;
+}
+
+.pSlide{
+position:absolute;
+width:100%;
+height:100%;
+object-fit:cover;
+transform:translateX(100%);
+transition:transform .6s ease;
+}
+
+.pSlide.active{
+transform:translateX(0);
+}
+
+.pSlide.prev{
+transform:translateX(-100%);
+}
+
+.pArrow{
+position:absolute;
+top:50%;
+transform:translateY(-50%);
+font-size:28px;
+color:white;
+background:rgba(0,0,0,0.4);
+padding:8px 12px;
+border-radius:50%;
+cursor:pointer;
+z-index:10;
+}
+
+.pArrow.left{left:10px;}
+.pArrow.right{right:10px;}
 
 video{
 width:100%;
@@ -107,6 +89,7 @@ font-size:28px;
 font-weight:bold;
 background:black;
 color:white;
+z-index:6;
 }
 
 #runningText{
@@ -118,6 +101,7 @@ background:rgba(0,0,0,0.85);
 color:#00ffd0;
 font-size:13px;
 padding:5px 0;
+z-index:6;
 }
 
 .phone{
@@ -178,26 +162,20 @@ box-shadow:0 0 6px rgba(125,255,192,0.6);
 
 <body>
 
+<div class="player">
+
 <!-- TOFFEE STYLE SLIDER -->
 
-<div class="slider" id="slider">
+<div id="playerSlider">
 
-<img src="https://sahin97kh.github.io/Sk-Television-/slider/1.jpg.png" class="slide active">
-<img src="https://sahin97kh.github.io/Sk-Television-/slider/1772723116959.png" class="slide">
-<img src="https://sahin97kh.github.io/Sk-Television-/slider/IMG_20260305_210449.jpg" class="slide">
+<img src="https://sahin97kh.github.io/Sk-Television-/slider/1.jpg.png" class="pSlide active">
+<img src="https://sahin97kh.github.io/Sk-Television-/slider/1772723116959.png" class="pSlide">
+<img src="https://sahin97kh.github.io/Sk-Television-/slider/IMG_20260305_210449.jpg" class="pSlide">
 
-<div class="arrow left" onclick="prevSlide()">❮</div>
-<div class="arrow right" onclick="nextSlide()">❯</div>
-
-<div class="dots">
-<span class="dot active" onclick="goSlide(0)"></span>
-<span class="dot" onclick="goSlide(1)"></span>
-<span class="dot" onclick="goSlide(2)"></span>
-</div>
+<div class="pArrow left" onclick="prevPSlide()">❮</div>
+<div class="pArrow right" onclick="nextPSlide()">❯</div>
 
 </div>
-
-<div class="player">
 
 <video id="videoPlayer" controls playsinline></video>
 
@@ -205,7 +183,7 @@ box-shadow:0 0 6px rgba(125,255,192,0.6);
 
 <div id="runningText">
 <marquee>
-আমাদের টিভি চ্যানেল এর কাজ চলছে, নতুন নতুন টিভি যুক্ত করা হচ্ছে তাই সাময়িক সমস্যার জন্য আমরা আন্তরিক ভাবে দুঃখিত। 
+আমাদের টিভি চ্যানেল এর কাজ চলছে, নতুন নতুন টিভি যুক্ত করা হচ্ছে তাই সাময়িক সমস্যার জন্য আমরা আন্তরিক ভাবে দুঃখিত। যেকোনো সমস্যার জন্য ফোন করুনঃ 
 <span class="phone">01835303883</span> অথবা 
 <span class="phone">01615303883</span>
 </marquee>
@@ -249,53 +227,49 @@ box-shadow:0 0 6px rgba(125,255,192,0.6);
 
 <script>
 
-/* TOFFEE SLIDER */
+/* PLAYER SLIDER */
 
-let slideIndex=0;
+let pIndex=0;
 
-const slides=document.querySelectorAll(".slide");
-const dots=document.querySelectorAll(".dot");
+const pSlides=document.querySelectorAll(".pSlide");
 
-function showSlide(n){
+function showPSlide(){
 
-slides.forEach(s=>s.classList.remove("active"));
-dots.forEach(d=>d.classList.remove("active"));
+pSlides.forEach(s=>{
+s.classList.remove("active");
+});
 
-slides[n].classList.add("active");
-dots[n].classList.add("active");
+pSlides[pIndex].classList.add("active");
 
 }
 
-function nextSlide(){
-slideIndex++;
-if(slideIndex>=slides.length){slideIndex=0;}
-showSlide(slideIndex);
+function nextPSlide(){
+pIndex++;
+if(pIndex>=pSlides.length){pIndex=0;}
+showPSlide();
 }
 
-function prevSlide(){
-slideIndex--;
-if(slideIndex<0){slideIndex=slides.length-1;}
-showSlide(slideIndex);
+function prevPSlide(){
+pIndex--;
+if(pIndex<0){pIndex=pSlides.length-1;}
+showPSlide();
 }
 
-function goSlide(n){
-slideIndex=n;
-showSlide(slideIndex);
-}
-
-setInterval(nextSlide,4000);
+setInterval(nextPSlide,4000);
 
 /* PLAYER */
 
 let hls=null;
+let currentList=[];
+let currentIndex=0;
 
 const defaultLogo="logos/IMG_20260305_175603.png";
 
 function playChannel(url){
 
+document.getElementById("playerSlider").style.display="none";
 document.getElementById("videoPlaceholder").style.display="none";
 document.getElementById("runningText").style.display="none";
-document.getElementById("slider").style.display="none";
 
 const video=document.getElementById("videoPlayer");
 
@@ -326,6 +300,9 @@ div.className="channel";
 
 div.onclick=function(){
 
+currentList=list;
+currentIndex=index;
+
 document.querySelectorAll(".channel").forEach(ch=>{
 ch.classList.remove("active");
 });
@@ -346,7 +323,7 @@ container.appendChild(div);
 
 }
 
-/* BANGLA */
+/* bangla */
 
 const banglaChannels=[
 {name:"Ekhon TV",logo:"logos/images.jpeg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1713/output/1713-audio_113432_eng=113200-video=2202800.m3u8"},
@@ -361,7 +338,7 @@ const banglaChannels=[
 {name:"SRK TV",logo:"logos/images (6).jpeg",link:"https://srknowapp.ncare.live/srktvhlswodrm/srktv.stream/tracks-v1a1/mono.m3u8"}
 ];
 
-/* INDIAN */
+/* indian */
 
 const indianChannels=[
 {name:"PTC Music",logo:"logos/images (7).jpeg",link:"https://d2lk5u59tns74c.cloudfront.net/out/v1/f913cf893c594f73b114216e74a2efbc/index_4.m3u8"},
@@ -376,7 +353,7 @@ const indianChannels=[
 {name:"Hindi Movie",logo:"logos/images (16).jpeg",link:"https://vods2.aynaott.com/hindimovies/tracks-v1a1/mono.ts.m3u8"}
 ];
 
-/* ENGLISH */
+/* english */
 
 const englishChannels=[
 {name:"Al Jazeera",logo:"logos/channels4_profile (4).jpg",link:"https://live-hls-apps-aje-fa.getaj.net/AJE/03.m3u8"},
@@ -391,7 +368,7 @@ const englishChannels=[
 {name:"SS1 TV",logo:"logos/cropped-SS1-ROUND-ICON-1.png",link:"https://linear-599.frequency.stream/dist/stirr/599/hls/master/playlist_1280x720.m3u8"}
 ];
 
-/* NEWS */
+/* news */
 
 const newsChannels=[
 {name:"BBC News",link:"https://vs-cmaf-pushb-ww-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_news24/pc_hd_abr_v2.mpd"},
