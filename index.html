@@ -15,6 +15,34 @@ color:white;
 padding-top:220px;
 }
 
+/* slider */
+
+#slider{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:220px;
+overflow:hidden;
+z-index:900;
+background:black;
+}
+
+.slide{
+position:absolute;
+width:100%;
+height:100%;
+object-fit:cover;
+opacity:0;
+transition:1s;
+}
+
+.slide.active{
+opacity:1;
+}
+
+/* player */
+
 .player{
 position:fixed;
 top:0;
@@ -59,10 +87,6 @@ padding:5px 0;
 .phone{
 color:red;
 font-weight:bold;
-}
-
-#prevBtn,#nextBtn{
-display:none;
 }
 
 .section{
@@ -113,67 +137,22 @@ border:1.5px solid #7dffc0;
 box-shadow:0 0 6px rgba(125,255,192,0.6);
 }
 
-@media (min-width:900px){
-
-video{
-height:420px;
-}
-
-#videoPlaceholder{
-height:420px;
-}
-
-body{
-padding-top:420px;
-}
-
-.channel{
-flex:0 0 120px;
-}
-
-.channel img{
-width:120px;
-height:120px;
-}
-
-.section-title{
-font-size:22px;
-}
-
-#prevBtn,#nextBtn{
-display:block;
-position:absolute;
-top:50%;
-transform:translateY(-50%);
-font-size:32px;
-color:white;
-background:rgba(0,0,0,0.5);
-padding:12px 16px;
-border-radius:50%;
-cursor:pointer;
-}
-
-#prevBtn{left:15px;}
-#nextBtn{right:15px;}
-
-.channel.active img{
-border:2px solid #7dffc0;
-box-shadow:0 0 10px rgba(125,255,192,0.8);
-}
-
-}
-
 </style>
 </head>
 
 <body>
 
+<!-- slider -->
+
+<div id="slider">
+<img src="slider/1.jpg.png" class="slide active">
+<img src="slider/1772723116959.png" class="slide">
+<img src="slider/IMG_20260305_210449.jpg" class="slide">
+</div>
+
 <div class="player">
 
 <video id="videoPlayer" controls playsinline></video>
-
-<div id="prevBtn">❮</div>
-<div id="nextBtn">❯</div>
 
 <div id="videoPlaceholder">SK Television</div>
 
@@ -223,6 +202,19 @@ box-shadow:0 0 10px rgba(125,255,192,0.8);
 
 <script>
 
+/* slider */
+
+let slides=document.querySelectorAll(".slide");
+let s=0;
+
+setInterval(()=>{
+slides[s].classList.remove("active");
+s=(s+1)%slides.length;
+slides[s].classList.add("active");
+},4000);
+
+/* player */
+
 let hls=null;
 let currentList=[];
 let currentIndex=0;
@@ -244,6 +236,7 @@ function playChannel(url){
 
 document.getElementById("videoPlaceholder").style.display="none";
 document.getElementById("runningText").style.display="none";
+document.getElementById("slider").style.display="none";
 
 const video=document.getElementById("videoPlayer");
 
