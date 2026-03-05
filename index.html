@@ -24,7 +24,7 @@ left:0;
 width:100%;
 height:220px;
 overflow:hidden;
-z-index:900;
+z-index:1200;
 background:black;
 }
 
@@ -34,7 +34,7 @@ width:100%;
 height:100%;
 object-fit:cover;
 opacity:0;
-transition:1s;
+transition:opacity 1s;
 }
 
 .slide.active{
@@ -158,7 +158,7 @@ box-shadow:0 0 6px rgba(125,255,192,0.6);
 
 <div id="runningText">
 <marquee>
-আমাদের টিভি চ্যানেল এর কাজ চলছে, নতুন নতুন টিভি যুক্ত করা হচ্ছে তাই সাময়িক সমস্যার জন্য আমরা আন্তরিক ভাবে দুঃখিত। যেকোনো সমস্যার জন্য ফোন করুনঃ 
+আমাদের টিভি চ্যানেল এর কাজ চলছে, নতুন নতুন টিভি যুক্ত করা হচ্ছে তাই সাময়িক সমস্যার জন্য আমরা আন্তরিক ভাবে দুঃখিত। 
 <span class="phone">01835303883</span> অথবা 
 <span class="phone">01615303883</span>
 </marquee>
@@ -204,14 +204,23 @@ box-shadow:0 0 6px rgba(125,255,192,0.6);
 
 /* slider */
 
-let slides=document.querySelectorAll(".slide");
-let s=0;
+const slides=document.querySelectorAll(".slide");
+let slideIndex=0;
 
-setInterval(()=>{
-slides[s].classList.remove("active");
-s=(s+1)%slides.length;
-slides[s].classList.add("active");
-},4000);
+function showSlides(){
+
+slides.forEach(s=>s.classList.remove("active"));
+
+slideIndex++;
+if(slideIndex>slides.length){slideIndex=1;}
+
+slides[slideIndex-1].classList.add("active");
+
+setTimeout(showSlides,3000);
+
+}
+
+showSlides();
 
 /* player */
 
@@ -220,17 +229,6 @@ let currentList=[];
 let currentIndex=0;
 
 const defaultLogo="logos/IMG_20260305_175603.png";
-
-function scrollActiveChannel(){
-const active=document.querySelector(".channel.active");
-if(active){
-active.scrollIntoView({
-behavior:"smooth",
-inline:"center",
-block:"nearest"
-});
-}
-}
 
 function playChannel(url){
 
@@ -256,6 +254,8 @@ video.play();
 
 }
 
+/* channel create */
+
 function createChannels(list,id){
 
 const container=document.getElementById(id);
@@ -275,8 +275,6 @@ ch.classList.remove("active");
 });
 
 div.classList.add("active");
-
-scrollActiveChannel();
 
 playChannel(c.link);
 
