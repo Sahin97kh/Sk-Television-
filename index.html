@@ -45,8 +45,6 @@ background:black;
 color:white;
 }
 
-/* running notice */
-
 #runningText{
 position:absolute;
 bottom:0;
@@ -63,13 +61,9 @@ color:red;
 font-weight:bold;
 }
 
-/* prev next button */
-
 #prevBtn,#nextBtn{
 display:none;
 }
-
-/* section */
 
 .section{
 padding:10px 0;
@@ -114,14 +108,10 @@ margin-top:8px;
 font-size:13px;
 }
 
-/* highlight */
-
 .channel.active img{
 border:1.5px solid #7dffc0;
 box-shadow:0 0 6px rgba(125,255,192,0.6);
 }
-
-/* PC MODE */
 
 @media (min-width:900px){
 
@@ -221,6 +211,14 @@ box-shadow:0 0 10px rgba(125,255,192,0.8);
 <div class="channels" id="englishChannels"></div>
 </div>
 
+<div class="section">
+<div class="section-title">
+<span>News Channels</span>
+<span>View All</span>
+</div>
+<div class="channels" id="newsChannels"></div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
 <script>
@@ -229,12 +227,10 @@ let hls=null;
 let currentList=[];
 let currentIndex=0;
 
-/* scroll */
+const defaultLogo="logos/IMG_20260305_173541.png";
 
 function scrollActiveChannel(){
-
 const active=document.querySelector(".channel.active");
-
 if(active){
 active.scrollIntoView({
 behavior:"smooth",
@@ -242,10 +238,7 @@ inline:"center",
 block:"nearest"
 });
 }
-
 }
-
-/* play */
 
 function playChannel(url){
 
@@ -269,8 +262,6 @@ video.play();
 }
 
 }
-
-/* create channel */
 
 function createChannels(list,id){
 
@@ -299,7 +290,7 @@ playChannel(c.link);
 };
 
 div.innerHTML=
-`<img src="${c.logo}">
+`<img src="${c.logo || defaultLogo}">
 <div class="channel-name">${c.name}</div>`;
 
 container.appendChild(div);
@@ -307,28 +298,6 @@ container.appendChild(div);
 });
 
 }
-
-/* next prev */
-
-document.getElementById("nextBtn").onclick=function(){
-
-if(currentIndex<currentList.length-1){
-currentIndex++;
-playChannel(currentList[currentIndex].link);
-scrollActiveChannel();
-}
-
-};
-
-document.getElementById("prevBtn").onclick=function(){
-
-if(currentIndex>0){
-currentIndex--;
-playChannel(currentList[currentIndex].link);
-scrollActiveChannel();
-}
-
-};
 
 /* bangla */
 
@@ -338,7 +307,7 @@ const banglaChannels=[
 {name:"71 TV",logo:"logos/IMG_20260303_225626.jpg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1705/output/1705-audio_113352_eng=113200-video=2202800.m3u8"},
 {name:"BTV",logo:"logos/images (2).jpeg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1709/output/1709-audio_113392_eng=113200-video=2202800.m3u8"},
 {name:"Jamuna Tv",logo:"logos/channels4_profile (1).jpg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1701/output/1701-audio_113312_eng=113200-video=1181200.m3u8"},
-{name:"B Vison",logo:"logos/images (3).jpeg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1715/output/1715-audio_113452_eng=113200-video=2202800.m3u8"},
+{name:"B Vision",logo:"logos/images (3).jpeg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1715/output/1715-audio_113452_eng=113200-video=2202800.m3u8"},
 {name:"Somoy Tv",logo:"logos/images (1).png",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1702/output/1702-audio_113322_eng=113200-video=2202800.m3u8"},
 {name:"Gazi Tv",logo:"logos/images (10).jpeg",link:"http://tvn1.chowdhury-shaheb.com/gazitv/index.m3u8"},
 {name:"NTV",logo:"logos/images (2).png",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1716/output/index.m3u8"},
@@ -375,9 +344,25 @@ const englishChannels=[
 {name:"SS1 TV",logo:"logos/cropped-SS1-ROUND-ICON-1.png",link:"https://linear-599.frequency.stream/dist/stirr/599/hls/master/playlist_1280x720.m3u8"}
 ];
 
+/* news */
+
+const newsChannels=[
+{name:"BBC News",link:"https://vs-cmaf-pushb-ww-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_news24/pc_hd_abr_v2.mpd"},
+{name:"CNN News",link:"https://turnerlive.warnermediacdn.com/hls/live/586495/cnn/cnn.m3u8"},
+{name:"France 24",link:"https://static.france24.com/live/F24_EN_HI_HLS/live_web.m3u8"},
+{name:"TRT World",link:"https://tv-trtworld.medya.trt.com.tr/master.m3u8"},
+{name:"NDTV",link:"https://ndtvlive-lh.akamaihd.net/i/ndtv_1@300634/master.m3u8"},
+{name:"Republic TV",link:"https://weblive.republicworld.com/liveedge/republictv/playlist.m3u8"},
+{name:"Times Now",link:"https://timesnow.airtel.tv/live.m3u8"},
+{name:"India Today",link:"https://indiatodaylive.akamaized.net/hls/live/2014320/indiatoday/master.m3u8"},
+{name:"Euronews",link:"https://euronews-euronews-world-1-au.samsung.wurl.tv/playlist.m3u8"},
+{name:"Sky News",link:"https://skynewsau-live.akamaized.net/hls/live/2002689/skynewsau-extra1/master.m3u8"}
+];
+
 createChannels(banglaChannels,"bdChannels");
 createChannels(indianChannels,"indianChannels");
 createChannels(englishChannels,"englishChannels");
+createChannels(newsChannels,"newsChannels");
 
 </script>
 
