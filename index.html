@@ -6,6 +6,7 @@
 <title>SK Television</title>
 
 <style>
+
 body{
 margin:0;
 font-family:Arial,sans-serif;
@@ -32,11 +33,12 @@ position:absolute;
 width:100%;
 height:100%;
 object-fit:cover;
-opacity:0;
-transition:opacity 1s;
+display:none;
 }
 
-.slide.active{opacity:1;}
+.slide.active{
+display:block;
+}
 
 /* player */
 
@@ -113,12 +115,12 @@ background:white;
 
 <body>
 
-<!-- slider -->
+<!-- SLIDER -->
 
 <div id="slider">
 <img class="slide active" src="slider/1.jpg.png">
-<img class="slide" src="slider/1.jpg">
 <img class="slide" src="slider/1772723116959.png">
+<img class="slide" src="slider/IMG_20260305_210449.jpg">
 </div>
 
 <div class="player">
@@ -126,7 +128,7 @@ background:white;
 <div id="videoPlaceholder">SK Television</div>
 </div>
 
-<!-- categories -->
+<!-- Categories -->
 
 <div class="section">
 <div class="section-title"><span>বাংলাদেশি চ্যানেল</span></div>
@@ -152,7 +154,7 @@ background:white;
 
 <script>
 
-/* slider */
+/* SLIDER AUTO */
 
 let slides=document.querySelectorAll(".slide");
 let slideIndex=0;
@@ -160,11 +162,11 @@ let slideIndex=0;
 setInterval(()=>{
 slides[slideIndex].classList.remove("active");
 slideIndex++;
-if(slideIndex>=slides.length)slideIndex=0;
+if(slideIndex>=slides.length){slideIndex=0;}
 slides[slideIndex].classList.add("active");
 },4000);
 
-/* player */
+/* PLAYER */
 
 let hls=null;
 const defaultLogo="logos/IMG_20260305_175603.png";
@@ -190,7 +192,7 @@ video.play();
 
 }
 
-/* create channels */
+/* CREATE CHANNELS */
 
 function createChannels(list,id){
 
@@ -213,7 +215,7 @@ container.appendChild(div);
 
 }
 
-/* Bangla */
+/* BANGLA */
 
 const banglaChannels=[
 {name:"Ekhon TV",logo:"logos/images.jpeg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1713/output/1713-audio_113432_eng=113200-video=2202800.m3u8"},
@@ -228,7 +230,7 @@ const banglaChannels=[
 {name:"SRK TV",logo:"logos/images (6).jpeg",link:"https://srknowapp.ncare.live/srktvhlswodrm/srktv.stream/tracks-v1a1/mono.m3u8"}
 ];
 
-/* Indian */
+/* INDIAN */
 
 const indianChannels=[
 {name:"PTC Music",logo:"logos/images (7).jpeg",link:"https://d2lk5u59tns74c.cloudfront.net/out/v1/f913cf893c594f73b114216e74a2efbc/index_4.m3u8"},
@@ -243,7 +245,7 @@ const indianChannels=[
 {name:"Hindi Movie",logo:"logos/images (16).jpeg",link:"https://vods2.aynaott.com/hindimovies/tracks-v1a1/mono.ts.m3u8"}
 ];
 
-/* English */
+/* ENGLISH */
 
 const englishChannels=[
 {name:"Al Jazeera",logo:"logos/channels4_profile (4).jpg",link:"https://live-hls-apps-aje-fa.getaj.net/AJE/03.m3u8"},
@@ -258,7 +260,7 @@ const englishChannels=[
 {name:"SS1 TV",logo:"logos/cropped-SS1-ROUND-ICON-1.png",link:"https://linear-599.frequency.stream/dist/stirr/599/hls/master/playlist_1280x720.m3u8"}
 ];
 
-/* News */
+/* NEWS */
 
 const newsChannels=[
 {name:"BBC News",link:"https://vs-cmaf-pushb-ww-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_news24/pc_hd_abr_v2.mpd"},
