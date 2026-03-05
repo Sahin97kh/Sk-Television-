@@ -1,340 +1,363 @@
-<!DOCTYPE html>  <html>  
-<head>  
-<meta charset="UTF-8">  
-<meta name="viewport" content="width=device-width, initial-scale=1.0">  
-<title>SK Television</title>  <style>  
-  
-body{  
-margin:0;  
-font-family:Arial,sans-serif;  
-background:#0b0014;  
-color:white;  
-padding-top:220px;  
-}  
-  
-.player{  
-position:fixed;  
-top:0;  
-left:0;  
-width:100%;  
-background:black;  
-z-index:1000;  
-}  
-  
-video{  
-width:100%;  
-height:220px;  
-background:black;  
-}  
-  
-#videoPlaceholder{  
-position:absolute;  
-top:0;  
-left:0;  
-width:100%;  
-height:220px;  
-display:flex;  
-align-items:center;  
-justify-content:center;  
-font-size:28px;  
-font-weight:bold;  
-background:black;  
-color:white;  
-}  
-  
-#runningText{  
-position:absolute;  
-bottom:0;  
-left:0;  
-width:100%;  
-background:rgba(0,0,0,0.85);  
-color:#00ffd0;  
-font-size:13px;  
-padding:5px 0;  
-}  
-  
-.phone{  
-color:red;  
-font-weight:bold;  
-}  
-  
-#prevBtn,#nextBtn{  
-display:none;  
-}  
-  
-.section{  
-padding:10px 0;  
-}  
-  
-.section-title{  
-display:flex;  
-justify-content:space-between;  
-padding:0 15px;  
-margin-bottom:8px;  
-font-size:18px;  
-}  
-  
-.channels{  
-display:flex;  
-overflow-x:auto;  
-padding:0 15px;  
-gap:15px;  
-scroll-behavior:smooth;  
-}  
-  
-.channels::-webkit-scrollbar{  
-display:none;  
-}  
-  
-.channel{  
-flex:0 0 22%;  
-text-align:center;  
-cursor:pointer;  
-}  
-  
-.channel img{  
-width:100%;  
-aspect-ratio:1/1;  
-border-radius:50%;  
-object-fit:cover;  
-background:white;  
-}  
-  
-.channel-name{  
-margin-top:8px;  
-font-size:13px;  
-}  
-  
-.channel.active img{  
-border:1.5px solid #7dffc0;  
-box-shadow:0 0 6px rgba(125,255,192,0.6);  
-}  
-  
-@media (min-width:900px){  
-  
-video{  
-height:420px;  
-}  
-  
-#videoPlaceholder{  
-height:420px;  
-}  
-  
-body{  
-padding-top:420px;  
-}  
-  
-.channel{  
-flex:0 0 120px;  
-}  
-  
-.channel img{  
-width:120px;  
-height:120px;  
-}  
-  
-.section-title{  
-font-size:22px;  
-}  
-  
-#prevBtn,#nextBtn{  
-display:block;  
-position:absolute;  
-top:50%;  
-transform:translateY(-50%);  
-font-size:32px;  
-color:white;  
-background:rgba(0,0,0,0.5);  
-padding:12px 16px;  
-border-radius:50%;  
-cursor:pointer;  
-}  
-  
-#prevBtn{left:15px;}  
-#nextBtn{right:15px;}  
-  
-.channel.active img{  
-border:2px solid #7dffc0;  
-box-shadow:0 0 10px rgba(125,255,192,0.8);  
-}  
-  
-}  
-  
-</style>  </head>  <body>  <div class="player">  <video id="videoPlayer" controls playsinline></video>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SK Television</title>
 
-<div id="prevBtn">❮</div>  
-<div id="nextBtn">❯</div>  <div id="videoPlaceholder">SK Television</div>  <div id="runningText">  
-<marquee>  
-আমাদের টিভি চ্যানেল এর কাজ চলছে, নতুন নতুন টিভি যুক্ত করা হচ্ছে তাই সাময়িক সমস্যার জন্য আমরা আন্তরিক ভাবে দুঃখিত। যেকোনো সমস্যার জন্য ফোন করুনঃ   
-<span class="phone">01835303883</span> অথবা   
-<span class="phone">01615303883</span>  
-</marquee>  
-</div>  </div>  <div class="section">  
-<div class="section-title">  
-<span>বাংলাদেশি চ্যানেল</span>  
-<span>View All</span>  
-</div>  
-<div class="channels" id="bdChannels"></div>  
-</div>  <div class="section">  
-<div class="section-title">  
-<span>Indian Channels</span>  
-<span>View All</span>  
-</div>  
-<div class="channels" id="indianChannels"></div>  
-</div>  <div class="section">  
-<div class="section-title">  
-<span>English Channels</span>  
-<span>View All</span>  
-</div>  
-<div class="channels" id="englishChannels"></div>  
-</div>  <div class="section">  
-<div class="section-title">  
-<span>News Channels</span>  
-<span>View All</span>  
-</div>  
-<div class="channels" id="newsChannels"></div>  
-</div>  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>  <script>  
-  
-let hls=null;  
-let currentList=[];  
-let currentIndex=0;  
-  
-const defaultLogo="logos/IMG_20260305_175603.png";  
-  
-function scrollActiveChannel(){  
-const active=document.querySelector(".channel.active");  
-if(active){  
-active.scrollIntoView({  
-behavior:"smooth",  
-inline:"center",  
-block:"nearest"  
-});  
-}  
-}  
-  
-function playChannel(url){  
-  
-document.getElementById("videoPlaceholder").style.display="none";  
-document.getElementById("runningText").style.display="none";  
-  
-const video=document.getElementById("videoPlayer");  
-  
-if(hls){hls.destroy();}  
-  
-if(Hls.isSupported()){  
-hls=new Hls();  
-hls.loadSource(url);  
-hls.attachMedia(video);  
-hls.on(Hls.Events.MANIFEST_PARSED,function(){  
-video.play();  
-});  
-}else{  
-video.src=url;  
-video.play();  
-}  
-  
-}  
-  
-function createChannels(list,id){  
-  
-const container=document.getElementById(id);  
-  
-list.forEach((c,index)=>{  
-  
-const div=document.createElement("div");  
-div.className="channel";  
-  
-div.onclick=function(){  
-  
-currentList=list;  
-currentIndex=index;  
-  
-document.querySelectorAll(".channel").forEach(ch=>{  
-ch.classList.remove("active");  
-});  
-  
-div.classList.add("active");  
-  
-scrollActiveChannel();  
-  
-playChannel(c.link);  
-  
-};  
-  
-div.innerHTML=  
-`<img src="${c.logo || defaultLogo}">  
-<div class="channel-name">${c.name}</div>`;  
-  
-container.appendChild(div);  
-  
-});  
-  
-}  
-  
-/* bangla */  
-  
-const banglaChannels=[  
-{name:"Ekhon TV",logo:"logos/images.jpeg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1713/output/1713-audio_113432_eng=113200-video=2202800.m3u8"},  
-{name:"ATN Bangla",logo:"logos/images.png",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1722/output/1722-audio_113522_eng=113200-video=2202800.m3u8"},  
-{name:"71 TV",logo:"logos/IMG_20260303_225626.jpg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1705/output/1705-audio_113352_eng=113200-video=2202800.m3u8"},  
-{name:"BTV",logo:"logos/images (2).jpeg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1709/output/1709-audio_113392_eng=113200-video=2202800.m3u8"},  
-{name:"Jamuna Tv",logo:"logos/channels4_profile (1).jpg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1701/output/1701-audio_113312_eng=113200-video=1181200.m3u8"},  
-{name:"B Vision",logo:"logos/images (3).jpeg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1715/output/1715-audio_113452_eng=113200-video=2202800.m3u8"},  
-{name:"Somoy Tv",logo:"logos/images (1).png",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1702/output/1702-audio_113322_eng=113200-video=2202800.m3u8"},  
-{name:"Gazi Tv",logo:"logos/images (10).jpeg",link:"http://tvn1.chowdhury-shaheb.com/gazitv/index.m3u8"},  
-{name:"NTV",logo:"logos/images (2).png",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1716/output/index.m3u8"},  
-{name:"SRK TV",logo:"logos/images (6).jpeg",link:"https://srknowapp.ncare.live/srktvhlswodrm/srktv.stream/tracks-v1a1/mono.m3u8"}  
-];  
-  
-/* indian */  
-  
-const indianChannels=[  
-{name:"PTC Music",logo:"logos/images (7).jpeg",link:"https://d2lk5u59tns74c.cloudfront.net/out/v1/f913cf893c594f73b114216e74a2efbc/index_4.m3u8"},  
-{name:"TV9 Bangal",logo:"logos/images (7).png",link:"https://dyjmyiv3bp2ez.cloudfront.net/pub-iotv9banaen8yq/liveabr/playlist.m3u8"},  
-{name:"B4U Music",logo:"logos/images (6).png",link:"https://edge2.roarzone.info:8447/roarzone/edge3/b4u-music/index.m3u8"},  
-{name:"Moon TV",logo:"logos/images (9).jpeg",link:"https://player.mslivestream.net/mslive/e10bb900976df9177b9a080314f26f86.sdp/chunks.m3u8"},  
-{name:"Music M",logo:"logos/images (13).jpeg",link:"http://vmi3039524.contaboserver.net:5050/music/tracks-v1a1/mono.m3u8"},  
-{name:"E24 TV",logo:"logos/unnamed.png",link:"https://mumt04.tangotv.in/E24/tracks-v1a1/mono.m3u8"},  
-{name:"Damal TV",logo:"logos/images (14).jpeg",link:"https://cdn-1.pishow.tv/live/1291/master.m3u8"},  
-{name:"Masti TV",logo:"logos/images (15).jpeg",link:"https://mumt02.tangotv.in/MASTIII/tracks-v2a1/mono.m3u8"},  
-{name:"Joo Music",logo:"logos/unnamed (1).png",link:"https://livecdn.live247stream.com/joomusic/tv/playlist.m3u8"},  
-{name:"Hindi Movie",logo:"logos/images (16).jpeg",link:"https://vods2.aynaott.com/hindimovies/tracks-v1a1/mono.ts.m3u8"}  
-];  
-  
-/* english */  
-  
-const englishChannels=[  
-{name:"Al Jazeera",logo:"logos/channels4_profile (4).jpg",link:"https://live-hls-apps-aje-fa.getaj.net/AJE/03.m3u8"},  
-{name:"Joy TV",logo:"logos/images (5).png",link:"https://nomawnoijl.gpcdn.net/akash/nikky/chunks.m3u8"},  
-{name:"Q Live TV",logo:"logos/images (12).jpeg",link:"https://qrg.akamaized.net/hls/live/2017383/lsqvc1it/1/720p.m3u8"},  
-{name:"Animal TV",logo:"logos/AnimalPlanet_Vertical_OneLineLarge_RGB-002.avif",link:"https://tiger-hub.vercel.app@vodzong.mjunoon.tv:8087/streamtest/Animal-Planet-158-3/live/158-3M/chunks.m3u8"},  
-{name:"Horor TV",logo:"logos/channels4_profile (5).jpg",link:"https://sofast-lg.vgcdn.net/sofast2/v1/0197ceb3d66b1ea5064936603b9eb4/0197ceb4234e1ea5064936603b9eb7/horror_tv_eng_2500k.m3u8"},  
-{name:"DW News",logo:"logos/images (17).jpeg",link:"https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/master.m3u8"},  
-{name:"Wild Tv",logo:"logos/WTV+_Black-Logo-Round-1080x1080.png",link:"https://dfhsahpa45kk2.cloudfront.net/scheduler/scheduleMaster/476.m3u8"},  
-{name:"Earth Tv",logo:"logos/images (19).jpeg",link:"https://autentic-adventure-earth-1-eu.rakuten.wurl.tv/playlist.m3u8"},  
-{name:"Kids Tv",logo:"logos/images (18).jpeg",link:"https://edge2.roarzone.info:8447/roarzone/edge3/discovery-kids/index.m3u8"},  
-{name:"SS1 TV",logo:"logos/cropped-SS1-ROUND-ICON-1.png",link:"https://linear-599.frequency.stream/dist/stirr/599/hls/master/playlist_1280x720.m3u8"}  
-];  
-  
-/* news */  
-  
-const newsChannels=[  
-{name:"BBC News",link:"https://vs-cmaf-pushb-ww-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_news24/pc_hd_abr_v2.mpd"},  
-{name:"CNN News",link:"https://turnerlive.warnermediacdn.com/hls/live/586495/cnn/cnn.m3u8"},  
-{name:"France 24",link:"https://static.france24.com/live/F24_EN_HI_HLS/live_web.m3u8"},  
-{name:"TRT World",link:"https://tv-trtworld.medya.trt.com.tr/master.m3u8"},  
-{name:"NDTV",link:"https://ndtvlive-lh.akamaihd.net/i/ndtv_1@300634/master.m3u8"},  
-{name:"Republic TV",link:"https://weblive.republicworld.com/liveedge/republictv/playlist.m3u8"},  
-{name:"Times Now",link:"https://timesnow.airtel.tv/live.m3u8"},  
-{name:"India Today",link:"https://indiatodaylive.akamaized.net/hls/live/2014320/indiatoday/master.m3u8"},  
-{name:"Euronews",link:"https://euronews-euronews-world-1-au.samsung.wurl.tv/playlist.m3u8"},  
-{name:"Sky News",link:"https://skynewsau-live.akamaized.net/hls/live/2002689/skynewsau-extra1/master.m3u8"}  
-];  
-  
-createChannels(banglaChannels,"bdChannels");  
-createChannels(indianChannels,"indianChannels");  
-createChannels(englishChannels,"englishChannels");  
-createChannels(newsChannels,"newsChannels");  
-  
-</script>  </body>  
+<style>
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#0b0014;
+color:white;
+padding-top:220px;
+}
+
+.player{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+background:black;
+z-index:1000;
+}
+
+video{
+width:100%;
+height:220px;
+background:black;
+}
+
+/* slider */
+
+#sliderBox{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:220px;
+z-index:5;
+}
+
+.slider{
+width:100%;
+height:220px;
+overflow:hidden;
+position:relative;
+}
+
+.slides{
+display:flex;
+transition:transform .6s ease;
+}
+
+.slides img{
+width:100%;
+height:220px;
+object-fit:cover;
+flex-shrink:0;
+}
+
+.dots{
+position:absolute;
+bottom:25px;
+left:50%;
+transform:translateX(-50%);
+}
+
+.dots span{
+width:6px;
+height:6px;
+margin:4px;
+background:white;
+opacity:.4;
+border-radius:50%;
+display:inline-block;
+}
+
+.dots span.active{
+opacity:1;
+}
+
+#videoPlaceholder{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:220px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:28px;
+font-weight:bold;
+background:black;
+color:white;
+z-index:3;
+}
+
+#runningText{
+position:absolute;
+bottom:0;
+left:0;
+width:100%;
+background:rgba(0,0,0,0.85);
+color:#00ffd0;
+font-size:13px;
+padding:5px 0;
+}
+
+.phone{
+color:red;
+font-weight:bold;
+}
+
+.section{
+padding:10px 0;
+}
+
+.section-title{
+display:flex;
+justify-content:space-between;
+padding:0 15px;
+margin-bottom:8px;
+font-size:18px;
+}
+
+.channels{
+display:flex;
+overflow-x:auto;
+padding:0 15px;
+gap:15px;
+scroll-behavior:smooth;
+}
+
+.channels::-webkit-scrollbar{
+display:none;
+}
+
+.channel{
+flex:0 0 22%;
+text-align:center;
+cursor:pointer;
+}
+
+.channel img{
+width:100%;
+aspect-ratio:1/1;
+border-radius:50%;
+object-fit:cover;
+background:white;
+}
+
+.channel-name{
+margin-top:8px;
+font-size:13px;
+}
+
+.channel.active img{
+border:1.5px solid #7dffc0;
+box-shadow:0 0 6px rgba(125,255,192,0.6);
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="player">
+
+<video id="videoPlayer" controls playsinline></video>
+
+<div id="sliderBox">
+
+<div class="slider">
+
+<div class="slides">
+
+<img src="https://sahin97kh.github.io/Sk-Television-/slider/1.jpg.png">
+<img src="https://sahin97kh.github.io/Sk-Television-/slider/1772723116959.png">
+<img src="https://sahin97kh.github.io/Sk-Television-/slider/IMG_20260305_210449.jpg">
+
+</div>
+
+<div class="dots">
+<span class="active"></span>
+<span></span>
+<span></span>
+</div>
+
+</div>
+
+</div>
+
+<div id="videoPlaceholder">SK Television</div>
+
+<div id="runningText">
+<marquee>
+আমাদের টিভি চ্যানেল এর কাজ চলছে, নতুন নতুন টিভি যুক্ত করা হচ্ছে তাই সাময়িক সমস্যার জন্য আমরা আন্তরিক ভাবে দুঃখিত। যেকোনো সমস্যার জন্য ফোন করুনঃ 
+<span class="phone">01835303883</span> অথবা 
+<span class="phone">01615303883</span>
+</marquee>
+</div>
+
+</div>
+
+
+<div class="section">
+<div class="section-title">
+<span>বাংলাদেশি চ্যানেল</span>
+<span>View All</span>
+</div>
+<div class="channels" id="bdChannels"></div>
+</div>
+
+<div class="section">
+<div class="section-title">
+<span>Indian Channels</span>
+<span>View All</span>
+</div>
+<div class="channels" id="indianChannels"></div>
+</div>
+
+<div class="section">
+<div class="section-title">
+<span>English Channels</span>
+<span>View All</span>
+</div>
+<div class="channels" id="englishChannels"></div>
+</div>
+
+<div class="section">
+<div class="section-title">
+<span>News Channels</span>
+<span>View All</span>
+</div>
+<div class="channels" id="newsChannels"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+<script>
+
+let hls=null
+let currentList=[]
+let currentIndex=0
+
+const defaultLogo="logos/IMG_20260305_175603.png"
+
+function scrollActiveChannel(){
+const active=document.querySelector(".channel.active")
+if(active){
+active.scrollIntoView({
+behavior:"smooth",
+inline:"center",
+block:"nearest"
+})
+}
+}
+
+function playChannel(url){
+
+document.getElementById("videoPlaceholder").style.display="none"
+document.getElementById("sliderBox").style.display="none"
+
+const video=document.getElementById("videoPlayer")
+
+if(hls){hls.destroy()}
+
+if(Hls.isSupported()){
+hls=new Hls()
+hls.loadSource(url)
+hls.attachMedia(video)
+hls.on(Hls.Events.MANIFEST_PARSED,function(){
+video.play()
+})
+}else{
+video.src=url
+video.play()
+}
+
+}
+
+function createChannels(list,id){
+
+const container=document.getElementById(id)
+
+list.forEach((c,index)=>{
+
+const div=document.createElement("div")
+div.className="channel"
+
+div.onclick=function(){
+
+currentList=list
+currentIndex=index
+
+document.querySelectorAll(".channel").forEach(ch=>{
+ch.classList.remove("active")
+})
+
+div.classList.add("active")
+
+scrollActiveChannel()
+
+playChannel(c.link)
+
+}
+
+div.innerHTML=
+`<img src="${c.logo || defaultLogo}">
+<div class="channel-name">${c.name}</div>`
+
+container.appendChild(div)
+
+})
+
+}
+
+/* bangla */
+
+const banglaChannels=[
+{name:"Ekhon TV",logo:"logos/images.jpeg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1713/output/1713-audio_113432_eng=113200-video=2202800.m3u8"},
+{name:"ATN Bangla",logo:"logos/images.png",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1722/output/1722-audio_113522_eng=113200-video=2202800.m3u8"},
+{name:"71 TV",logo:"logos/IMG_20260303_225626.jpg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1705/output/1705-audio_113352_eng=113200-video=2202800.m3u8"},
+{name:"BTV",logo:"logos/images (2).jpeg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1709/output/1709-audio_113392_eng=113200-video=2202800.m3u8"},
+{name:"Jamuna Tv",logo:"logos/channels4_profile (1).jpg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1701/output/1701-audio_113312_eng=113200-video=1181200.m3u8"},
+{name:"B Vision",logo:"logos/images (3).jpeg",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1715/output/1715-audio_113452_eng=113200-video=2202800.m3u8"},
+{name:"Somoy Tv",logo:"logos/images (1).png",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1702/output/1702-audio_113322_eng=113200-video=2202800.m3u8"},
+{name:"Gazi Tv",logo:"logos/images (10).jpeg",link:"http://tvn1.chowdhury-shaheb.com/gazitv/index.m3u8"},
+{name:"NTV",logo:"logos/images (2).png",link:"https://owrcovcrpy.gpcdn.net/bpk-tv/1716/output/index.m3u8"},
+{name:"SRK TV",logo:"logos/images (6).jpeg",link:"https://srknowapp.ncare.live/srktvhlswodrm/srktv.stream/tracks-v1a1/mono.m3u8"}
+]
+
+createChannels(banglaChannels,"bdChannels")
+createChannels(indianChannels,"indianChannels")
+createChannels(englishChannels,"englishChannels")
+createChannels(newsChannels,"newsChannels")
+
+/* slider */
+
+let index=0
+const slides=document.querySelector(".slides")
+const dots=document.querySelectorAll(".dots span")
+
+function showSlide(){
+slides.style.transform="translateX(-"+index*100+"%)"
+dots.forEach(d=>d.classList.remove("active"))
+dots[index].classList.add("active")
+}
+
+setInterval(()=>{
+index++
+if(index>=dots.length){index=0}
+showSlide()
+},4000)
+
+showSlide()
+
+</script>
+
+</body>
 </html>
